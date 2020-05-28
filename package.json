@@ -1,0 +1,34 @@
+{
+  "name": "shipenguin-by-shipengine",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "autoprefixer": "^9.8.0",
+    "browser-sync": "^2.26.7",
+    "cssnano": "^4.1.10",
+    "express": "^4.17.1",
+    "gulp": "^4.0.2",
+    "gulp-postcss": "^8.0.0",
+    "gulp-sass": "^4.1.0",
+    "gulp-sourcemaps": "^2.6.5",
+    "ngrok": "^3.2.7",
+    "postcss-import": "^12.0.1"
+  },
+  "devDependencies": {
+    "bulma": "^0.8.2"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mccombs/shipenguin-by-shipengine.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mccombs/shipenguin-by-shipengine/issues"
+  },
+  "homepage": "https://github.com/mccombs/shipenguin-by-shipengine#readme"
+}

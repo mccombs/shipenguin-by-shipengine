@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Shipengquin by ShipEngine</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" href="/css/styles.css">
+  <link rel="icon" type="image/png" sizes="104x80" href="/images/shipenguin-icon.svg">
+</head>
+
+<body>
+    <header>
+        <a class="logo" href="/"></a>
+    </header>
+    <div class="container">
+        <div class="box">
+            
+            <div class="step_chart columns m-t-lg is-centered">
+                <div class="column is-two-thirds">
+                <ul class="steps has-content-centered">
+                    <li class="steps-segment is-active">
+                        <span class="steps-marker">1</span>
+                        <div class="steps-content">
+                            <p class="is-size-7">Welcome</p>
+                        </div>
+                    </li>
+                    <li class="steps-segment">
+                        <span class="steps-marker">2</span>
+                        <div class="steps-content">
+                            <p class="is-size-7">Shipping</p>
+                        </div>
+                    </li>
+                    <li class="steps-segment">
+                        <span class="steps-marker">3</span>
+                        <div class="steps-content">
+                            <p class="is-size-7">Payment</p>
+                        </div>
+                    </li>
+                    <li class="steps-segment">
+                        <span class="steps-marker">4</span>
+                        <div class="steps-content">
+                            <p class="is-size-7">Get label</p>
+                        </div>
+                    </li>
+
+                </ul>
+                </div>
+            </div>
+
+
+            <section class="step step_one">
+                <h1 class="headline">Shipenguin is the fastest, cheapest way to print a label online.</h1>
+                <p class="subhead">Something something. How amazing is Shipenguin? Look ma! No hands. Checkout these awesome shipping labels. This is all powered by <a href="https://www.shipengine.com/">ShipEngine</a>.</p>
+                <div class="control has-icons-left has-icons-right">
+                    <input class="input is-medium" type="email" placeholder="Email">
+                    <span class="icon is-left">
+                    <i class="fas fa-envelope"></i>
+                    </span>
+                    <span class="icon is-right">
+                    <i class="fas fa-check"></i>
+                    </span>
+                </div>
+                <button class="button is-primary bounce">Get Started</button>
+                <p class="text-center m-t-md is-size-6">Secondary call to action? Login?</p>
+            </section>
+            
+            <hr>
+            
+            <section class="step step_two is-hidden">
+                <h1 class="headline">Let's get to know each other...</h1>
+                <p class="subhead m-b-md">Where are you shipping from? What are you shipping?</p>
+                <div class="columns">
+                    <div id="locationField" class="column is-one-half">
+                        <div class="field">
+                            <label class="label">Ship from <span>Verified by Google</span></label>
+                            <div class="control">
+                                <input id="autocomplete" placeholder="Start typing your address" onFocus="geolocate()" class="input" type="text" />
+                            </div>
+                          </div>
+                      </div>
+                      <div id="locationField2" class="column is-one-half">
+                        <div class="field">
+                            <label class="label">Ship to <span>Verified by Google</span></label>
+                            <div class="control">
+                                <input id="autocomplete2" placeholder="Start typing your address" onFocus="geolocate()" class="input" type="text" />
+                            </div>
+                          </div>
+                      </div>
+                </div>
+
+
+                <div class="columns">
+                    <div class="column is-one-half">
+                        <label class="label">Package weight</label>
+                        <div class="columns">
+                            <div class="column is-one-half">
+                                <div class="control">
+                                    <input class="input" type="text" placeholder="Weight - Lbs">
+                                </div>
+                                <p class="help">Pounds</p>
+                            </div>
+                            <div class="column is-one-half">
+                                <div class="control">
+                                    <input class="input" type="text" placeholder="Weight - Oz">
+                                </div>
+                                <p class="help">Oz</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="column is-one-half">
+                        <label class="label">Package Dimensions</label>
+                        <div class="columns">
+                            <div class="column is-one-half">
+                                <div class="control">
+                                    <input class="input" type="text" placeholder="Length">
+                                </div>
+                                <p class="help">Length in inches</p>
+                            </div>
+                            <div class="column is-one-half">
+                                <div class="control">
+                                    <input class="input" type="text" placeholder="Width">
+                                </div>
+                                <p class="help">Width in inches</p>
+                            </div>
+                            <div class="column is-one-half">
+                                <div class="control">
+                                    <input class="input" type="text" placeholder="Height">
+                                </div>
+                                <p class="help">Height in inches</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="columns">
+                    <div class="column is-one-half">
+                        <label class="label">Package information</label>
+                        <label class="checkbox">
+                            <input type="checkbox">
+                            I agree this package contains <strong>no</strong> hazardous materials
+                        </label>
+                    </div>
+                    <div class="column is-one-half">
+                        <label class="label">Legal</label>
+                        <label class="checkbox">
+                            <input type="checkbox">
+                            I agree to the <a href="#">terms and conditions</a>
+                        </label>
+                    </div>
+                </div>
+
+                <aside>
+                    <label class="label">Ship From</label>
+                    <div id="addressone">
+                        <input type="text" id="street_number" name="street_number" />
+                        <input type="text" id="route" name="street_name" />
+                        <input type="text" id="locality" name="town_city" />
+                        <input type="text" id="administrative_area_level_1" name="administrative_area_level_1" />
+                        <input type="text" id="postal_code" name="postcode" />
+                        <input type="text" id="country" name="country" />
+                    </div>
+                    <label class="label">Ship To</label>
+                    <div id="addresstwo">
+                        <input type="text" id="street_number2" name="street_number2" />
+                        <input type="text" id="route2" name="street_name2" />
+                        <input type="text" id="locality2" name="town_city2" />
+                        <input type="text" id="administrative_area_level_12" name="administrative_area_level_12" />
+                        <input type="text" id="postal_code2" name="postcode2" />
+                        <input type="text" id="country2" name="country2" />
+                      </div>
+
+                      <label class="label">Select Rate</label>
+                      <div class="control">
+                        <label class="radio">
+                          <input type="radio" name="answer" checked>
+                          <img class="ice_right" src="/images/usps.svg">
+                        </label>
+                        <button class="button is-primary bounce">proceed to payment <i class="fas fa-arrow-alt-circle-right"></i></button>
+
+                      
+
+                 </aside>
+            </section>
+
+            <section class="step step_three is-hidden">
+                <h1 class="headline">Almost finished!</h1>
+                <p class="subhead">We'll charge your card <strong>$24.33</strong> and you can download your label on the next step!</p>
+                <div class='card-wrapper m-t-md'></div>
+                <div class="is-centered">
+                    <div class="columns m-t-lg">
+                        <div class="column is-half is-offset-one-quarter">
+                            <form>
+                                <input type="text" class="input" placeholder="Card Number" name="number">
+                                <div class="columns m-t-xxs">
+                                    <div class="column is-half">
+                                        <input type="text" class="input" placeholder="First Name" name="first-name"/>
+                                    </div>
+                                    <div class="column is-half">
+                                        <input type="text" class="input" placeholder="Last Name" name="last-name"/>
+                                    </div>
+                                </div>
+                                <div class="columns  is-centered">
+                                    <div class="column is-one-quarter">
+                                        <input type="text" class="input" placeholder="Exp" name="expiry"/>
+                                    </div>
+                                    <div class="column is-one-quarter">
+                                        <input type="text" class="input" placeholder="CVC" name="cvc"/>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="column"></div>
+                    </div>
+                    <div class="field is-grouped is-grouped-centered">
+                        <button class="button is-primary bounce">Grab my label! <i class="fas fa-arrow-alt-circle-right"></i></button>
+
+                    </div>
+                      
+                      
+
+
+                </div>
+
+            </section>
+            <section class="step step_four has-text-centered is-hidden">
+                <h1 class="headline">Success!</h1>
+                <p class="subhead m-b-md">Checkout your label below!</p>
+                <img class="label_preview" src="/images/label-10441659.png">
+                <p><a href="https://api.shipengine.com/v1/downloads/10/BgQQH1jfDkCjjaEzO7ccVQ/label-10441659.pdf">Download my label</a>
+                    </p>
+            </section>
+
+        </div>
+
+    </div>
+
+    <div class="demo container is-size-7 has-text-centered">
+        
+            <strong>For demo only </strong><span class="demo_steps"><a href="#">Step one</a> | <a href="#">Step two</a> | <a href="#">Step three</a> | <a href="#">Step four</a></span>
+        
+    </div>
+
+    <a class="github_tag" href="https://github.com/mccombs/shipenguin-by-shipengine"></a>
+    <div class="penguin_background">
+        <img class="ice_left" src="/images/ice_corner_left.svg">
+        <img class="ice_right" src="/images/ice_corner_right.svg">
+        <img class="ice_a" src="/images/ice_a.svg">
+        <img class="ice_b" src="/images/ice_b.svg">
+        <img class="ice_c" src="/images/ice_c.svg">
+        <img class="pen penguin_a" src="/images/penguin.svg">
+        <img class="pen penguin_b" src="/images/penguin.svg">
+        <img class="pen penguin_c" src="/images/penguin.svg">
+        <img class="pen penguin_d" src="/images/penguin.svg">
+        <img class="pen penguin_e" src="/images/penguin.svg">
+    </div>
+
+
+
+    <script>
+// This example displays an address form, using the autocomplete feature
+// of the Google Places API to help users fill in the information.
+
+var placeSearch, autocomplete, autocomplete2;
+var componentForm = {
+  street_number: 'short_name',
+  route: 'long_name',
+  locality: 'long_name',
+  administrative_area_level_1: 'short_name',
+  country: 'long_name',
+  postal_code: 'short_name'
+};
+
+function initAutocomplete() {
+  // Create the autocomplete object, restricting the search to geographical
+  // location types.
+  autocomplete = new google.maps.places.Autocomplete(
+    /** @type {!HTMLInputElement} */
+    (document.getElementById('autocomplete')), {
+      types: ['geocode']
+    });
+
+  // When the user selects an address from the dropdown, populate the address
+  // fields in the form.
+  autocomplete.addListener('place_changed', function() {
+    fillInAddress(autocomplete, "");
+  });
+
+  autocomplete2 = new google.maps.places.Autocomplete(
+    /** @type {!HTMLInputElement} */
+    (document.getElementById('autocomplete2')), {
+      types: ['geocode']
+    });
+  autocomplete2.addListener('place_changed', function() {
+    fillInAddress(autocomplete2, "2");
+  });
+
+}
+
+function fillInAddress(autocomplete, unique) {
+  // Get the place details from the autocomplete object.
+  var place = autocomplete.getPlace();
+
+  for (var component in componentForm) {
+    if (!!document.getElementById(component + unique)) {
+      document.getElementById(component + unique).value = '';
+      document.getElementById(component + unique).disabled = false;
+    }
+  }
+
+  // Get each component of the address from the place details
+  // and fill the corresponding field on the form.
+  for (var i = 0; i < place.address_components.length; i++) {
+    var addressType = place.address_components[i].types[0];
+    if (componentForm[addressType] && document.getElementById(addressType + unique)) {
+      var val = place.address_components[i][componentForm[addressType]];
+      document.getElementById(addressType + unique).value = val;
+    }
+  }
+}
+google.maps.event.addDomListener(window, "load", initAutocomplete);
+
+function geolocate() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(function(position) {
+      var geolocation = {
+        lat: position.coords.latitude,
+        lng: position.coords.longitude
+      };
+      var circle = new google.maps.Circle({
+        center: geolocation,
+        radius: position.coords.accuracy
+      });
+      autocomplete.setBounds(circle.getBounds());
+    });
+  }
+}
+
+          </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAE-jLiYIzUUX9ahjhVptyfcEKXjYNo9QY&libraries=places&callback=initAutocomplete"
+              async defer></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+    <script src="/js/card.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        // Card Form
+        var card = new Card({
+            form: 'form',
+            container: '.card-wrapper',
+
+            formSelectors: {
+                nameInput: 'input[name="first-name"], input[name="last-name"]'
+            }
+        });
+        
+        // Demo toggle
+        $('.demo_steps a').click(function(){
+            var step = $('.demo_steps a').index(this);
+            $('.step').each(function(i) {
+                $(this).addClass('is-hidden',i);
+                $('.step_chart li').removeClass('is-active');
+            });
+
+            if (step == 0) {
+                $('.step_one').removeClass('is-hidden');
+                $('.step_chart li:nth-child(1)').addClass('is-active');
+            } else if (step == 1) {
+                $('.step_two').removeClass('is-hidden');
+                $('.step_chart li:nth-child(2)').addClass('is-active');
+            } else if (step == 2) {
+                $('.step_three').removeClass('is-hidden');
+                $('.step_chart li:nth-child(3)').addClass('is-active');
+            } else if (step == 3) {
+                $('.step_four').removeClass('is-hidden');
+                $('.step_chart li:nth-child(4)').addClass('is-active');
+            }
+            return false;
+        });
+
+    </script>
+
+</body>
+
+</html>
