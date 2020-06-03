@@ -8,8 +8,8 @@ var gulp = require("gulp"),
 
 var paths = {
     styles: {
-        src: "./web/styles/*.scss",
-        dest: "web/css"
+        src: "./public/styles/*.scss",
+        dest: "public/css"
     }
 };
 
@@ -37,8 +37,8 @@ function watch() {
         notify: false,
         proxy: "shipengquin.test"
     });
-    gulp.watch("./web/styles/**/*.scss", style);
-    gulp.watch("web/*.html").on('change', browserSync.reload);
+    gulp.watch("./public/styles/**/*.scss", style);
+    gulp.watch("public/*.html").on('change', browserSync.reload);
 }
 
 exports.watch = watch

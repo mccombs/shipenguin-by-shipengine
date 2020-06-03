@@ -16,7 +16,9 @@
     <div class="container">
         <div class="box">
             
-            <div class="step_chart columns m-t-lg is-centered">
+            <div class="step_chart columns m-t-lg is-centered
+            
+            ">
                 <div class="column is-two-thirds">
                 <ul class="steps has-content-centered">
                     <li class="steps-segment is-active">
@@ -49,7 +51,7 @@
             </div>
 
 
-            <section class="step step_one">
+            <section class="step step_one is-hidden">
                 <h1 class="headline">Shipenguin is the fastest, cheapest way to print a label online.</h1>
                 <p class="subhead">Something something. How amazing is Shipenguin? Look ma! No hands. Checkout these awesome shipping labels. This is all powered by <a href="https://www.shipengine.com/">ShipEngine</a>.</p>
                 <div class="control has-icons-left has-icons-right">
@@ -67,13 +69,13 @@
             
             <hr>
             
-            <section class="step step_two is-hidden">
+            <section class="step step_two ">
                 <h1 class="headline">Let's get to know each other...</h1>
                 <p class="subhead m-b-md">Where are you shipping from? What are you shipping?</p>
                 <div class="columns">
-                    <div id="locationField" class="column is-one-half">
+                    <div id="x" class="column is-one-half">
                         <div class="field">
-                            <label class="label">Ship from <span>Verified by Google</span></label>
+                            <label class="label is-size-6">Ship from <span>Autocomplete by Google</span></label>
                             <div class="control">
                                 <input id="autocomplete" placeholder="Start typing your address" onFocus="geolocate()" class="input" type="text" />
                             </div>
@@ -81,7 +83,7 @@
                       </div>
                       <div id="locationField2" class="column is-one-half">
                         <div class="field">
-                            <label class="label">Ship to <span>Verified by Google</span></label>
+                            <label class="label is-size-6">Ship to <span>Autocomplete by Google</span></label>
                             <div class="control">
                                 <input id="autocomplete2" placeholder="Start typing your address" onFocus="geolocate()" class="input" type="text" />
                             </div>
@@ -151,23 +153,35 @@
                 </div>
 
                 <aside>
-                    <label class="label">Ship From</label>
-                    <div id="addressone">
-                        <input type="text" id="street_number" name="street_number" />
-                        <input type="text" id="route" name="street_name" />
-                        <input type="text" id="locality" name="town_city" />
-                        <input type="text" id="administrative_area_level_1" name="administrative_area_level_1" />
-                        <input type="text" id="postal_code" name="postcode" />
-                        <input type="text" id="country" name="country" />
+                    <div id="addressone" class="address">
+                    <label class="label">Ship From
+                        <span class="tag verify" id="verify">
+                            <i class="fas fa-cog fa-spin"></i>Verifying via ShipEngine
+                        </span>
+                    </label>
+
+
+
+                        <span type="text" id="street_number" name="street_number"></span>
+                        <span type="text" id="route" name="street_name"></span>
+                        <span type="text" id="locality" name="town_city"></span>
+                        <span type="text" id="administrative_area_level_1" name="administrative_area_level_1"></span>
+                        <span type="text" id="postal_code" name="postcode"></span>
+                        <span type="text" id="country" name="country"></span>
                     </div>
-                    <label class="label">Ship To</label>
-                    <div id="addresstwo">
-                        <input type="text" id="street_number2" name="street_number2" />
-                        <input type="text" id="route2" name="street_name2" />
-                        <input type="text" id="locality2" name="town_city2" />
-                        <input type="text" id="administrative_area_level_12" name="administrative_area_level_12" />
-                        <input type="text" id="postal_code2" name="postcode2" />
-                        <input type="text" id="country2" name="country2" />
+                    <div id="addresstwo" class="address">
+
+                    <label class="label">Ship to
+                        <span class="tag verify" id="verify2">
+                            <i class="fas fa-cog fa-spin"></i>Verifying via ShipEngine
+                        </span>
+                    </label>
+                        <span type="text" id="street_number2" name="street_number2"></span>
+                        <span type="text" id="route2" name="street_name2"></span>
+                        <span type="text" id="locality2" name="town_city2"></span>
+                        <span type="text" id="administrative_area_level_12" name="administrative_area_level_12"></span>
+                        <span type="text" id="postal_code2" name="postcode2"></span>
+                        <span type="text" id="country2" name="country2"></span>
                       </div>
 
                       <label class="label">Select Rate</label>
@@ -186,41 +200,30 @@
             <section class="step step_three is-hidden">
                 <h1 class="headline">Almost finished!</h1>
                 <p class="subhead">We'll charge your card <strong>$24.33</strong> and you can download your label on the next step!</p>
-                <div class='card-wrapper m-t-md'></div>
-                <div class="is-centered">
-                    <div class="columns m-t-lg">
-                        <div class="column is-half is-offset-one-quarter">
-                            <form>
-                                <input type="text" class="input" placeholder="Card Number" name="number">
-                                <div class="columns m-t-xxs">
-                                    <div class="column is-half">
-                                        <input type="text" class="input" placeholder="First Name" name="first-name"/>
-                                    </div>
-                                    <div class="column is-half">
-                                        <input type="text" class="input" placeholder="Last Name" name="last-name"/>
-                                    </div>
-                                </div>
-                                <div class="columns  is-centered">
-                                    <div class="column is-one-quarter">
-                                        <input type="text" class="input" placeholder="Exp" name="expiry"/>
-                                    </div>
-                                    <div class="column is-one-quarter">
-                                        <input type="text" class="input" placeholder="CVC" name="cvc"/>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                        <div class="column"></div>
-                    </div>
+
+
+                <!-- Display a payment form -->
+                <form id="payment-form">
+                    <div id="card-element"><!--Stripe.js injects the Card Element--></div>
+                    <button id="submit">
+                      <div class="spinner hidden" id="spinner"></div>
+                      <span id="button-text">Pay</span>
+                    </button>
+                    <p id="card-errors" role="alert"></p>
+                    <p class="result-message hidden">
+                      Payment succeeded, see the result in your
+                      <a href="" target="_blank">Stripe dashboard.</a> Refresh the page to pay again.
+                    </p>
+                  </form>
+              
+
                     <div class="field is-grouped is-grouped-centered">
                         <button class="button is-primary bounce">Grab my label! <i class="fas fa-arrow-alt-circle-right"></i></button>
-
                     </div>
                       
                       
 
 
-                </div>
 
             </section>
             <section class="step step_four has-text-centered is-hidden">
@@ -255,129 +258,13 @@
         <img class="pen penguin_e" src="/images/penguin.svg">
     </div>
 
-
-
-    <script>
-// This example displays an address form, using the autocomplete feature
-// of the Google Places API to help users fill in the information.
-
-var placeSearch, autocomplete, autocomplete2;
-var componentForm = {
-  street_number: 'short_name',
-  route: 'long_name',
-  locality: 'long_name',
-  administrative_area_level_1: 'short_name',
-  country: 'long_name',
-  postal_code: 'short_name'
-};
-
-function initAutocomplete() {
-  // Create the autocomplete object, restricting the search to geographical
-  // location types.
-  autocomplete = new google.maps.places.Autocomplete(
-    /** @type {!HTMLInputElement} */
-    (document.getElementById('autocomplete')), {
-      types: ['geocode']
-    });
-
-  // When the user selects an address from the dropdown, populate the address
-  // fields in the form.
-  autocomplete.addListener('place_changed', function() {
-    fillInAddress(autocomplete, "");
-  });
-
-  autocomplete2 = new google.maps.places.Autocomplete(
-    /** @type {!HTMLInputElement} */
-    (document.getElementById('autocomplete2')), {
-      types: ['geocode']
-    });
-  autocomplete2.addListener('place_changed', function() {
-    fillInAddress(autocomplete2, "2");
-  });
-
-}
-
-function fillInAddress(autocomplete, unique) {
-  // Get the place details from the autocomplete object.
-  var place = autocomplete.getPlace();
-
-  for (var component in componentForm) {
-    if (!!document.getElementById(component + unique)) {
-      document.getElementById(component + unique).value = '';
-      document.getElementById(component + unique).disabled = false;
-    }
-  }
-
-  // Get each component of the address from the place details
-  // and fill the corresponding field on the form.
-  for (var i = 0; i < place.address_components.length; i++) {
-    var addressType = place.address_components[i].types[0];
-    if (componentForm[addressType] && document.getElementById(addressType + unique)) {
-      var val = place.address_components[i][componentForm[addressType]];
-      document.getElementById(addressType + unique).value = val;
-    }
-  }
-}
-google.maps.event.addDomListener(window, "load", initAutocomplete);
-
-function geolocate() {
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(function(position) {
-      var geolocation = {
-        lat: position.coords.latitude,
-        lng: position.coords.longitude
-      };
-      var circle = new google.maps.Circle({
-        center: geolocation,
-        radius: position.coords.accuracy
-      });
-      autocomplete.setBounds(circle.getBounds());
-    });
-  }
-}
-
-          </script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAE-jLiYIzUUX9ahjhVptyfcEKXjYNo9QY&libraries=places&callback=initAutocomplete"
-              async defer></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAE-jLiYIzUUX9ahjhVptyfcEKXjYNo9QY&libraries=places&callback=initAutocomplete" defer></script>
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
-    <script src="/js/card.js"></script>
+    <script src="https://js.stripe.com/v3/"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script>
-        // Card Form
-        var card = new Card({
-            form: 'form',
-            container: '.card-wrapper',
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
-            formSelectors: {
-                nameInput: 'input[name="first-name"], input[name="last-name"]'
-            }
-        });
-        
-        // Demo toggle
-        $('.demo_steps a').click(function(){
-            var step = $('.demo_steps a').index(this);
-            $('.step').each(function(i) {
-                $(this).addClass('is-hidden',i);
-                $('.step_chart li').removeClass('is-active');
-            });
-
-            if (step == 0) {
-                $('.step_one').removeClass('is-hidden');
-                $('.step_chart li:nth-child(1)').addClass('is-active');
-            } else if (step == 1) {
-                $('.step_two').removeClass('is-hidden');
-                $('.step_chart li:nth-child(2)').addClass('is-active');
-            } else if (step == 2) {
-                $('.step_three').removeClass('is-hidden');
-                $('.step_chart li:nth-child(3)').addClass('is-active');
-            } else if (step == 3) {
-                $('.step_four').removeClass('is-hidden');
-                $('.step_chart li:nth-child(4)').addClass('is-active');
-            }
-            return false;
-        });
-
-    </script>
+    <script src="/js/client.js" defer></script>
 
 </body>
 

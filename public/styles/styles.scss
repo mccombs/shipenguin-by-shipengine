@@ -1,7 +1,7 @@
 @import '/styles/bulma.css';
 @import '/styles/bulma-steps.css';
 @import '/styles/fonts.css';
-@import '/styles/card.css';
+@import '/styles/store.css';
 
 $sizeUnit: rem;
 $marginKey: 'm';
@@ -116,6 +116,7 @@ $dark-gray: #565656;
 /* Bulma overwrites */
 .button.is-primary, .button.is-primary {background: $dark-teal;transition: 1s;}
 .button.is-primary:hover, .button.is-primary.is-hovered {background:$teal;transition: 1s;}
+.card {background: none;}
 
 /* Steps */
 .steps-segment {cursor: pointer;}
@@ -189,6 +190,11 @@ p.subhead {padding:0;font-size: 1.25em;font-weight: 300;text-align: center;}
 aside {
     background: #EBEBEB;margin:20px 0;padding: 20px;border-radius: 5px;height: 100%;
     input[type="text"] {background: none;border: none;display: inline-block;}
+    .address {border:1px solid #ccc;border-radius: 5px;margin:20px 0;padding: 5px 10px;position: relative;}
+    .verify {
+        font-size: .8em;position: absolute;top:5px;right:5px;
+        svg {max-width: 12px;margin:-2px 5px 0 0;display: block;}
+    }
     .button {margin: 50px 0;}
     @include media(break3) {
         margin:0;
