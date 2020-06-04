@@ -136,7 +136,7 @@ h1.headline {}
 }
 
 .penguin_background {
-    .ice_a, .ice_b, .ice_c, .ice_left {display: none;}
+    .ice_a, .ice_b, .ice_c, .ice_left, .ice_right, .pen {display: none;}
     .ice_a, .ice_b, .ice_c, .ice_left, .ice_right {position: absolute;bottom: 0;}
     .ice_left {left: 0;}
     .ice_right {right: 0;}
@@ -149,7 +149,9 @@ h1.headline {}
     .penguin_c {width:20px;right: 155px;bottom:155px;}
     .penguin_d {width:20px;right: 155px;bottom:155px;}
     .penguin_e {width: 22px;right: 355px;bottom: 82px;}
-
+    @include media(break3) {
+        .ice_right, .pen {display: block;}
+    }
 }
 
 /* Steps */
@@ -168,7 +170,9 @@ p.subhead {padding:0;font-size: 1.25em;font-weight: 300;text-align: center;}
 }
 
 .container.step1 .box {
-    transform:translateX(-160px);
+    @include media(break3) {
+        transform:translateX(-160px);
+    }
 }
 
 .step {padding: 50px;}
