@@ -1,3 +1,4 @@
+//////////////////////////////////////////
 ///// STEP ONE: Google Autocomplete //////
 var placeSearch, autocomplete, autocomplete2;
 var componentForm = {
@@ -46,21 +47,20 @@ function fillInAddress(autocomplete, unique) {
     }
   }
 
-  // Get each component of the address from the place details
-  // and fill the corresponding field on the form.
   for (var i = 0; i < place.address_components.length; i++) {
     var addressType = place.address_components[i].types[0];
     if (componentForm[addressType] && document.getElementById(addressType + unique)) {
       var val = place.address_components[i][componentForm[addressType]];
       document.getElementById(addressType + unique).textContent = val;
-      var d = document.getElementById("verify" + unique);
-      d.className += " is-warning";
     }
   }
-    
-  // SEND TO STEP TWO
-  verifyAddressWithShipEngine(place);
+  const statusButton = document.getElementById("verify" + unique);
+  statusButton.className += " is-warning";
 
+  // SEND TO STEP TWO
+  verifyAddressWithShipEngine(place, statusButton);
+  // SEND TO STEP THREE
+  verifyRateWithShipEngine();
 }
 google.maps.event.addDomListener(window, "load", initAutocomplete);
 
@@ -80,196 +80,114 @@ function geolocate() {
   }
 }
 ///// END STEP ONE: Google Autocomplete //////
+/////////////////////////////////////////////
 
-
+/////////////////////////////////////////////
 ///// STEP TWO: Verify with ShipEngine //////
-function verifyAddressWithShipEngine(data) {
-    console.log('here');
+function verifyAddressWithShipEngine(data, statusButton) {
 
+    const addressData = [];
+    var store = false;
+    var obj = {};
 
-    async function verifyAddress(data) {
-        axios.post('/verify', data)
-        .then(res => {
-            console.log(res);
-            console.log(res.data);
-        })
-        .catch(error => console.log(error));
+    ///// STEP TWO (A): Clean //////
+    for (var i = 0; i < data.address_components.length; i++) {
+        var addressType = data.address_components[i].types[0];
+        var val = data.address_components[i].long_name;
+
+        // SHIPENGINE ADDRESS FORMAT
+        // [{"address_line1":"Winchester Blvd","city_locality":"San Jose","state_province":"CA","postal_code":"78756","country_code":"US"}]
+
+        // store street number and route into address_line1
+        if (addressType == "street_number") {
+            streetNumber = val;
+            var store = false;
+            continue;
+        }
+        if (addressType == "route") {
+            addressType = "address_line1";
+            val = streetNumber + " " + val;
+        }
+        if (addressType == "locality") { addressType = "city_locality" };
+        if (addressType == "administrative_area_level_1") { addressType = "state_province" };
+        // Translating and hardcoding US 
+        if (addressType == "country") { addressType = "country_code";val = "US"; };
+            
+        var store = true;
+
+        if (store == true) {
+            obj[addressType] = val;
+        }
+
     }
+    addressData.push(obj);    
 
-    const addressData = JSON.stringify([{"address_line1":"525 S Winchester Blvd","city_locality":"San Jose","state_province":"CA","postal_code":"95128","country_code":"US"}]);
+    const addressDataFormat = JSON.stringify(addressData);
 
-    verifyAddress(addressData);
+    // Reset button status while verifing
+    statusButton.className = "tag verify is-warning"
+    statusButton.innerHTML = '<i class="fas fa-cog fa-spin"></i>Verifying via ShipEngine';
 
-    // axios({
-    //     method: 'post',
-    //     url: '/verify',
-    //     data: data
-    //   })
-    // .then(res => {
-    //     console.log(res);
-    // })
-    // .catch(error => console.log(error));
-      
+    ///// STEP TWO (B): Check with SHIPENGINE -> router.post('/verify') //////
+    fetch("/verify", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: addressDataFormat
+      })
+      .then(function(response) {
+        return response.json();
+      }).then(function(data) {
+        console.log(data); 
+        
+        // Check Satus
+        if (data[0].status) {
+            var status = data[0].status;
+            if (status == "verified") {
+                statusButton.className = "tag verify is-success";
+                statusButton.innerHTML = "Verified!";
+            } 
+            else if (status == "unverified") {
+                statusButton.innerHTML = "Could not verify address";
+            }
+            else if (status == "warning") {
+                statusButton.className += " is-danger";
+                statusButton.innerHTML = "Error with Address! Please try again.";
+            }
+            else if (status == "error") {
+                statusButton.className += " is-danger";
+                statusButton.innerHTML = "Error with Address! Please try again.";
 
+            }
+        };
+    });
+    
 
 }
-//     fetch("/verify", {
-//         method: "POST",
-//         headers: {
-//           "Content-Type": "application/json"
-//         },
-//         body: JSON.stringify(data)
-//       })
-//         .then(function(result) {
-//           return result.json();
-//         })
-//         .then(function(data) {
-
-
-// const addressData = JSON.stringify([{"address_line1":"525 S Winchester Blvd","city_locality":"San Jose","state_province":"CA","postal_code":"95128","country_code":"US"}]);
-// }
-
-//     verifyAddress(addressData);
-
-    // const verify = fetch("/verify", {
-    //     method: "GET",
-
-    //     body: JSON.stringify(data)
-    //   })
-    //     .then(function(result) {
-    //         console.log(result);
-    //     })
-
-
-    // }
-    // fetch("/verify", {
-    //     method: "GET",
-    //     headers: {
-    //       "Content-Type": "application/json"
-    //     },
-    //     body: JSON.stringify(data)
-    //   })
-    //     .then(function(result) {
-    //         console.log(result);
-    //       return result.json().status;
-    //     })
-        
-    // }
-
-    // return fetch("/verify", {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json"
-    //     },
-    //     body: JSON.stringify(data)
-    //   })
-    //     .then(function(result) {
-    //         console.log(result);
-    //       return result.json().status;
-    //     })
-
-// }
-    // const addressData = JSON.stringify([{"address_line1":"525 S Winchester Blvd","city_locality":"San Jose","state_province":"CA","postal_code":"95128","country_code":"US"}]);
-
-
-    //     (async () => {
-    
-    //     const response = await fetch('/verify', {
-    //         method: 'post',
-    //         body: addressData,
-    //         headers: {'Content-Type': 'application/json'}
-    //     });
-    //     const json = await response.json();
-    
-    //     console.log(json);
-    // })();
-
-
-    // // const d2 = JSON.stringify(data.formatted_address);
-    // // console.log(d2);
-
-    // async function verifyAddress(data) {
-    //     axios.post('https://api.shipengine.com/v1/addresses/validate', data, shipengine_config)
-    //     .then(res => {
-    //         // console.log(res);
-    //         // console.log(res.data)
-    //     })
-    //     .catch(error => console.log(error));
-    // }
-
-    // const addressData = JSON.stringify([{"address_line1":"525 S Winchester Blvd","city_locality":"San Jose","state_province":"CA","postal_code":"95128","country_code":"US"}]);
-//}
-
-    // verifyAddress(addressData);
-
-    // res.json("hello");
-
-
-
-    // const addressData = JSON.stringify([{"address_line1":"525 S Winchester Blvd","city_locality":"San Jose","state_province":"CA","postal_code":"95128","country_code":"US"}]);
-
-
-    // (async () => {
-    
-    //     const response = await fetch('/verify', {
-    //         method: 'post',
-    //         body: addressData,
-    //         headers: {'Content-Type': 'application/json'}
-    //     });
-    //     const json = await response.json();
-    
-    //     console.log(json);
-    // })();
-    
-    
-
-    // console.log(data.formatted_address);
-
-    // console.log('verify');
-
-    // fetch("/verify", {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json"
-    //     },
-    //     body: JSON.stringify(data)
-    //   })
-    //     .then(function(result) {
-    //       return result.json();
-    //     })
-
-
-    // fetch("/verify", {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json"
-    //     },
-    //     body: JSON.stringify([{"address_line1":"525 S Winchester Blvd","city_locality":"San Jose","state_province":"CA","postal_code":"95128","country_code":"US"}])
-    //   })
-    //     .then(function(result) {
-    //       return result.json();
-    //     })
-    //     .then(function(data) {
-    //       var elements = stripe.elements();
-    //     })
-
-    // fetch("/verify", {
-    // method: "POST",
-    // headers: {
-    //     "Content-Type": "application/json"
-    // },
-    // body: JSON.stringify(data.formatted_address)
-    // })
-    // .then(function(result) {
-    // return result.json();
-    // })
-    // .then(function(data) {
-    // var elements = stripe.elements();
-    // })
-
-//}
 ///// END STEP TWO: Verify with ShipEngine //////
+/////////////////////////////////////////////
 
+
+function verifyRateWithShipEngine() {
+    fetch("/rates", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: ""
+      })
+      .then(function(response) {
+        return response.json();
+      }).then(function(data) {
+        console.log(data);
+        // Extract the first rate - AJM Best way to do this? ¯\_(ツ)_/¯
+        console.log(data.rate_response.rates[0].shipping_amount.amount);
+        var rate = data.rate_response.rates[0].shipping_amount.amount;
+        $('.address.rate .price').text('$'+rate);
+        $('#goToStep3').removeAttr("disabled").removeClass('is-inactive').addClass('is-success');
+      });
+}
 
         // Demo toggle
         $('.demo_steps a').click(function(){
@@ -278,6 +196,9 @@ function verifyAddressWithShipEngine(data) {
                 $(this).addClass('is-hidden',i);
                 $('.step_chart li').removeClass('is-active');
             });
+            $('.container').removeClass('step0 step1 step2 step3');
+            $('.container').addClass('step' + step);
+
 
             if (step == 0) {
                 $('.step_one').removeClass('is-hidden');
@@ -388,13 +309,13 @@ var payWithCard = function(stripe, card, clientSecret) {
 // Shows a success message when the payment is complete
 var orderComplete = function(paymentIntentId) {
   loading(false);
-  document
-    .querySelector(".result-message a")
-    .setAttribute(
-      "href",
-      "https://dashboard.stripe.com/test/payments/" + paymentIntentId
-    );
-  document.querySelector(".result-message").classList.remove("hidden");
+//   document
+//     .querySelector(".result-message a")
+//     .setAttribute(
+//       "href",
+//       "https://dashboard.stripe.com/test/payments/" + paymentIntentId
+//     );
+  $('.result-message').removeClass("is-hidden");
   document.querySelector("button").disabled = true;
 };
 
@@ -413,11 +334,7 @@ var loading = function(isLoading) {
   if (isLoading) {
     // Disable the button and show a spinner
     document.querySelector("button").disabled = true;
-    document.querySelector("#spinner").classList.remove("hidden");
-    document.querySelector("#button-text").classList.add("hidden");
   } else {
     document.querySelector("button").disabled = false;
-    document.querySelector("#spinner").classList.add("hidden");
-    document.querySelector("#button-text").classList.remove("hidden");
   }
 };

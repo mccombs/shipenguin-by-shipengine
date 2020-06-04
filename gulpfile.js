@@ -35,7 +35,7 @@ function reload() {
 function watch() {
     browserSync.init({
         notify: false,
-        proxy: "shipengquin.test"
+        proxy: "mccombs_io.ngrok.io"
     });
     gulp.watch("./public/styles/**/*.scss", style);
     gulp.watch("public/*.html").on('change', browserSync.reload);

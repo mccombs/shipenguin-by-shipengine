@@ -13,12 +13,11 @@
     <header>
         <a class="logo" href="/"></a>
     </header>
-    <div class="container">
+    <!-- AJM - Change to step 0 before launch -->
+    <div class="container step1">
         <div class="box">
             
-            <div class="step_chart columns m-t-lg is-centered
-            
-            ">
+            <div class="step_chart columns m-t-lg is-centered ">
                 <div class="column is-two-thirds">
                 <ul class="steps has-content-centered">
                     <li class="steps-segment is-active">
@@ -144,11 +143,12 @@
                         </label>
                     </div>
                     <div class="column is-one-half">
-                        <label class="label">Legal</label>
+                        <!-- AJM - Do we need legal?? -->
+                        <!-- <label class="label">Legal</label>
                         <label class="checkbox">
                             <input type="checkbox">
                             I agree to the <a href="#">terms and conditions</a>
-                        </label>
+                        </label> -->
                     </div>
                 </div>
 
@@ -184,15 +184,21 @@
                         <span type="text" id="country2" name="country2"></span>
                       </div>
 
-                      <label class="label">Select Rate</label>
-                      <div class="control">
-                        <label class="radio">
-                          <input type="radio" name="answer" checked>
-                          <img class="ice_right" src="/images/usps.svg">
+                    <div class="address rate">
+                        <label class="label">Select Rate 
+                            <span class="tag verify" id="verify2">
+                                <i class="fas fa-cog fa-spin"></i>Rates via ShipEngine
+                            </span>
                         </label>
-                        <button class="button is-primary bounce">proceed to payment <i class="fas fa-arrow-alt-circle-right"></i></button>
-
+                        <div class="control p-sm">
+                            <label class="radio">
+                                <img class="ice_right" src="/images/usps.svg">
+                                <span class="price">$0.00</span>
+                            </label>
+                        </div>
+                    </div>
                       
+                    <button id="goToStep3" class="button is-inactive bounce" disabled>Proceed to Pay <i class="fas fa-arrow-alt-circle-right"></i></button>
 
                  </aside>
             </section>
@@ -205,21 +211,18 @@
                 <!-- Display a payment form -->
                 <form id="payment-form">
                     <div id="card-element"><!--Stripe.js injects the Card Element--></div>
-                    <button id="submit">
-                      <div class="spinner hidden" id="spinner"></div>
-                      <span id="button-text">Pay</span>
-                    </button>
-                    <p id="card-errors" role="alert"></p>
-                    <p class="result-message hidden">
-                      Payment succeeded, see the result in your
-                      <a href="" target="_blank">Stripe dashboard.</a> Refresh the page to pay again.
-                    </p>
-                  </form>
+                    <div class="m-xl field is-grouped is-grouped-centered">
+                        <button id="submit" class="button is-primary bounce">Pay and Grab my label! <i class="fas fa-arrow-alt-circle-right"></i></button>
+                    </div>
+                    <div class="m-xl field is-grouped is-grouped-centered">
+                        <p id="card-errors" role="alert"></p>
+                        <p class="result-message is-hidden">
+                        Payment succeeded!
+                        </p>
+                    </div>
+                </form>
               
 
-                    <div class="field is-grouped is-grouped-centered">
-                        <button class="button is-primary bounce">Grab my label! <i class="fas fa-arrow-alt-circle-right"></i></button>
-                    </div>
                       
                       
 
@@ -262,7 +265,6 @@
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
     <script src="https://js.stripe.com/v3/"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
     <script src="/js/client.js" defer></script>
 

@@ -11,23 +11,11 @@
 'use strict';
 
 const config = require('./config');
+const request = require('request');
 const express = require('express');
 const router = express.Router();
 const stripe = require('stripe')(config.stripe.secretKey);
 stripe.setApiVersion(config.stripe.apiVersion);
-const fetch = require('node-fetch');
-const axios = require('axios');
-const headers = {
-    'api-key': config.shipengine,
-    'Content-Type': 'application/json',
-};
-const shipengine_config = {
-    headers,
-    baseUrl:  'https://api.shipengine.com',
-    validateStatus(){
-        return true;
-    }
-};
 
 // Render the main app HTML.
 router.get('/', (req, res) => {
@@ -36,182 +24,62 @@ router.get('/', (req, res) => {
 
 
 router.post('/verify', (req, res) => {
-    console.log(req);
-    function verifyAddress(data) {
-        axios.post('https://api.shipengine.com/v1/addresses/validate', data, shipengine_config)
-        .then(res => {
-            console.log('Response was received');
-            console.log(res.status);
-            return res.data
-        })
-        .catch(error => console.log(error));
-    }
-      
+    
+    var options = {
+        'method': 'POST',
+        'url': 'https://api.shipengine.com/v1/addresses/validate',
+        'headers': {
+          'Host': 'api.shipengine.com',
+          'API-Key': 'TEST_nzQR9NW7hSCzUTx0D9ItEGldeaWLgxhDhSPPsNpXLnU',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(req.body)
+      };
+      request(options, function (error, response) { 
+        if (error) throw new Error(error);
 
-    const addressData = JSON.stringify([{"address_line1":"Winchester Blvd","city_locality":"San Jose","state_province":"CA","postal_code":"78756","country_code":"US"}])
-     
-    return verifyAddress(addressData);
+        var responseBody =  JSON.parse(response.body);
+        // quick reference -> app console
+        // var verification = responseBody[0].status;
+        // console.log(verification);
+        // console.log(responseBody);
+        res.json(responseBody);
+        // res.json(response);
+        // res.status(200).json(response);
+    });
+
 });
 
-    // fetch("https://api.shipengine.com/v1/addresses/validate", {
-    //     method: "POST",
-    //     headers: {
-    //         headers
-    //     },
-    //     body: JSON.stringify([{"address_line1":"525 S Winchester Blvd","city_locality":"San Jose","state_province":"CA","postal_code":"95128","country_code":"US"}])
-    //   })
-    //     .then(function(result) {
-    //     console.log(result);
-    //       return result.json();
-    //     })
-    //     .catch(error => console.log(error));
+router.post('/rates', (req, res) => {
+    
+    var options = {
+        'method': 'POST',
+        'url': 'https://api.shipengine.com/v1/rates',
+        'headers': {
+          'Host': 'api.shipengine.com',
+          'API-Key': 'TEST_nzQR9NW7hSCzUTx0D9ItEGldeaWLgxhDhSPPsNpXLnU',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({"rate_options":{"carrier_ids":["se-253580"]},"shipment":{"validate_address":"no_validation","ship_to":{"name":"Amanda Miller","phone":"555-555-5555","address_line1":"525 S Winchester Blvd","city_locality":"San Jose","state_province":"CA","postal_code":"95128","country_code":"US","address_residential_indicator":"yes"},"ship_from":{"company_name":"Example Corp.","name":"John Doe","phone":"111-111-1111","address_line1":"4009 Marathon Blvd","address_line2":"Suite 300","city_locality":"Austin","state_province":"TX","postal_code":"78756","country_code":"US","address_residential_indicator":"no"},"packages":[{"weight":{"value":1,"unit":"ounce"}}]}})
+      
+      };
+      request(options, function (error, response) { 
+        if (error) throw new Error(error);
 
-        
-    // });
+        var responseBody =  JSON.parse(response.body);
+        // quick reference -> app console
+        // var verification = responseBody[0].status;
+        // console.log(verification);
+        // console.log(responseBody);
+        res.json(responseBody);
+        // res.json(response);
+        // res.status(200).json(response);
+    });
 
-
-//     async function verifyAddress(data) {
-//         axios.post('https://api.shipengine.com/v1/addresses/validate', data, shipengine_config)
-//         .then(res => {
-//             console.log(res);
-//             console.log(res.data)
-//         })
-//         .catch(error => console.log(error));
-//     }
-
-//     const addressData = JSON.stringify([{"address_line1":"525 S Winchester Blvd","city_locality":"San Jose","state_province":"CA","postal_code":"95128","country_code":"US"}]);
-
-
-// verifyAddress(addressData);
-
-// async function createLabel(data) {
-
-//     axios.post('https://api.shipengine.com/v1/labels', data, config.shipengine)
-//     .then(res => {
-//         console.log(res);
-//         console.log(res.data)
-//     })
-//     .catch(error => console.log(error));
-// }
-
-// async function trackLabel(labelId) {
-//   axios.post(`https://api.shipengine.com/v1/labels/${labelId}/track`, config.shipengine)
-//   .then(res => {
-//       console.log(res);
-//       console.log(res.data)
-//   })
-//   .catch(error => console.log(error));
-// }
-
-// const labelData = {
-//   "shipment": {
-//     "service_code": "ups_ground",
-//     "ship_to": {
-//       "name": "Mickey and Minnie Mouse",
-//       "phone": "7147814565",
-//       "company_name": "The Walt Disney Company",
-//       "address_line1": "500 South Buena Vista Street",
-//       "city_locality": "Burbank",
-//       "state_province": "CA",
-//       "postal_code": "91521",
-//       "country_code": "US",
-//       "address_residential_indicator": "No"
-//     },
-//     "ship_from": {
-//       "name": "Shippy",
-//       "phone": "5124854282",
-//       "company_name": "ShipEngine",
-//       "address_line1": "3800 N. Lamar Blvd.",
-//       "address_line2": "Suite 220",
-//       "city_locality": "Austin",
-//       "state_province": "TX",
-//       "postal_code": "78756",
-//       "country_code": "US",
-//       "address_residential_indicator": "No"
-//     },
-//     "packages": [
-//       {
-//         "weight": {
-//           "value": 1.0,
-//           "unit": "ounce"
-//         }
-//       }
-//     ]
-//   },
-//   "is_return_label": false
-// };
-
-// async function createAndTrackLabel(data){
-//   let response = await createLabel(data);
-//   let labelId = response.data.label_id;
-//   let trackingResponse = await trackLabel(labelId);
-//   console.log(`Label with label_id=${labelId} is in the ${trackingResponse.data.status_description} state.`);
-// };
-
-// createAndTrackLabel(labelData);
-  
+});
 
 
 
-// Track a package
-
-/**
- * Stripe integration to accept all types of payments with 3 POST endpoints.
- *
- * 1. POST endpoint to create a PaymentIntent.
- * 2. For payments using Elements, Payment Request, Apple Pay, Google Pay, Microsoft Pay
- * the PaymentIntent is confirmed automatically with Stripe.js on the client-side.
- * 3. POST endpoint to be set as a webhook endpoint on your Stripe account.
- * It confirms the PaymentIntent as soon as a non-card payment source becomes chargeable.
- */
-
-// Calculate total payment amount based on items in basket.
-// const calculatePaymentAmount = async items => {
-//   const productList = await products.list();
-//   // Look up sku for the item so we can get the current price.
-//   const skus = productList.data.reduce(
-//     (a, product) => [...a, ...product.skus.data],
-//     []
-//   );
-//   const total = items.reduce((a, item) => {
-//     const sku = skus.filter(sku => sku.id === item.parent)[0];
-//     return a + sku.price * item.quantity;
-//   }, 0);
-//   return total;
-// };
-
-// Create the PaymentIntent on the backend.
-// router.post('/payment_intents', async (req, res, next) => {
-//   let {currency, items} = req.body;
-//   const amount = await calculatePaymentAmount(items);
-
-//   try {
-//     const paymentIntent = await stripe.paymentIntents.create({
-//       amount,
-//       currency,
-//       payment_method_types: config.paymentMethods,
-//     });
-//     return res.status(200).json({paymentIntent});
-//   } catch (err) {
-//     return res.status(500).json({error: err.message});
-//   }
-// });
-
-// // Update PaymentIntent with shipping cost.
-// router.post('/payment_intents/:id/shipping_change', async (req, res, next) => {
-//   const {items, shippingOption} = req.body;
-//   let amount = await calculatePaymentAmount(items);
-//   amount += products.getShippingCost(shippingOption.id);
-
-//   try {
-//     const paymentIntent = await stripe.paymentIntents.update(req.params.id, {
-//       amount,
-//     });
-//     return res.status(200).json({paymentIntent});
-//   } catch (err) {
-//     return res.status(500).json({error: err.message});
-//   }
-// });
 
 // Webhook handler to process payments for sources asynchronously.
 router.post('/webhook', async (req, res) => {
