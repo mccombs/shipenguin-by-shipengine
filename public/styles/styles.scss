@@ -169,7 +169,7 @@ p.subhead {padding:0;font-size: 1.25em;font-weight: 300;text-align: center;}
     }
 }
 
-.container.step1 .box {
+.container.step_two .box {
     @include media(break3) {
         transform:translateX(-160px);
     }
