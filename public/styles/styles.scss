@@ -84,8 +84,10 @@ $teal: #71CBD3;
 $dark-teal: #00676D;
 $ice: #EFF9FA;
 $light-gray: #EBEBEB;
+$soft-gray: #E4E4E4;
 $gray: #ccc;
 $dark-gray: #565656;
+$off-white: #f0f0f0;
 
 /* Animations */
 .bounce {
@@ -127,13 +129,13 @@ $dark-gray: #565656;
 /* Globals */
 html {background: $teal;}
 body {font-family: 'TT Commons';}
+a {color:$teal;}
 
 /* Type */
 h1 {font-weight: 600;}
-h1.headline {}
-.logo {
-    background: url("/images/shipenguin-logo.svg") no-repeat;width: 372px;height: 74px;display: block;margin: 100px auto 0;
-}
+header {text-align:center;}
+.logo {background: url("/images/shipenguin-logo_v2.svg") no-repeat;width: 402px;height: 74px;display: block;margin: 100px auto 20px;}
+.tagline {font-weight: 400;font-size: 1.75em;color: $ice;}
 
 .penguin_background {
     .ice_a, .ice_b, .ice_c, .ice_left, .ice_right, .pen {display: none;}
@@ -163,17 +165,22 @@ h1.headline {font-size: 3em;text-align: center;line-height: 1.25;}
 p.subhead {padding:0;font-size: 1.25em;font-weight: 300;text-align: center;}
 .label_preview {max-width: 300px;margin: 0 auto;}
 .box {
-    background-color:$ice;max-width: 1100px;margin:100px 20px;z-index: 10;position: relative;transition: all 500ms;
+    background-color:$ice;max-width: 1100px;margin:25px 20px 0;z-index: 10;position: relative;transition: all 500ms;
     @include media(break3) {
-        margin: 100px auto;
+        margin: 50px auto;
     }
 }
-
-.container.step_two .box {
+.verify {
+    font-size: .8em;position: absolute;top:8px;right:5px;
+    svg {max-width: 12px;margin:-2px 5px 0 0;display: inline-block;}
+}
+.container.step2 .box {
     @include media(break3) {
         transform:translateX(-160px);
     }
 }
+
+.package_info {background:$off-white;border:1px solid darken($soft-gray, 10%);padding: 15px 20px;border-radius: 5px;margin:5px 0;}
 
 .step {padding: 50px;}
 .step_one {
@@ -182,7 +189,7 @@ p.subhead {padding:0;font-size: 1.25em;font-weight: 300;text-align: center;}
     input[type='email'] {display:block;z-index: 2;position: relative;}
     .button:hover {animation-name: bounce;}
     @include media(break3) {
-        padding: 50px 75px;
+        padding: 50px 75px 0;
     }
 }
 .step_two, .step_three, .step_four {
@@ -193,25 +200,52 @@ p.subhead {padding:0;font-size: 1.25em;font-weight: 300;text-align: center;}
     }
 }
 .step_chart {
-    display: none;
+    margin:0;
+    p {text-transform: uppercase;color:$gray;font-weight: 400;letter-spacing: 1px;}
+    li.is-active p {color: $teal;}
 }
 aside {
-    background: #EBEBEB;margin:20px 0;padding: 20px;border-radius: 5px;height: 100%;
-    input[type="text"] {background: none;border: none;display: inline-block;}
-    .address {border:1px solid #ccc;border-radius: 5px;margin:20px 0;padding: 5px 10px;position: relative;}
-    .address.rate .price {font-weight: bold;display: block;text-align: right;width: 100%;}
-    .verify {
-        font-size: .8em;position: absolute;top:5px;right:5px;
-        svg {max-width: 12px;margin:-2px 5px 0 0;display: inline-block;}
+    background: #EBEBEB;margin:15px;padding: 20px;border-radius: 5px;height: 100%;position: relative;overflow: hidden;
+    .rate_list {
+        background: $dark-teal;position: absolute;top:-100%;left:0;width: 100%;height: 100%;padding:20px;z-index: 2;
+        a, strong {color:$ice !important;}
+        a {display: flex;justify-content: space-between;padding:4px;cursor: pointer;}
+        a:hover {background: $ice;color:$dark-teal !important;}
+        a:hover strong {color:$dark-teal !important;}
     }
-    .button {margin: 50px 0;}
+    .package_type {
+        position:relative;cursor:pointer;margin:25px auto 50px;background: $ice;border: 1px solid $teal;padding:15px;text-align:center;border-radius:5px;
+        label {color:$teal;font-weight: 800;text-transform: uppercase;}
+        img {display:block;margin:10px auto;}
+        p {font-size: 12px;}
+        button {font-size:12px;color:$gray;font-weight:800;cursor:pointer;position: absolute;bottom:-30px;text-transform: uppercase;color: $dark-gray;padding:15px 10px 5px;z-index: -1;transform: translateX(-50%);}
+        &:hover {background: darken($ice, 5%);}
+    }
+    .rate_box {
+        margin:10px auto;
+        label {font-weight: 600;font-size: 12px;color:$gray;}
+    }
+    .rate {
+        margin:0 auto;background: $soft-gray;border:1px solid $gray;font-size: 3em;text-align: center;color:$gray;padding:20px 0;border-radius: 15px;
+        span {margin:0;display:block;line-height: 1;}
+        label {font-size: 14px;margin:0;display: block;text-align: center;;}
+    }
+    .t_and_c {
+        text-align: center;
+        label {font-size: .8em;color: $dark-gray;}
+    }
+    .button {margin: 15px auto;border-radius: 15px;}
     @include media(break3) {
-        margin:0;
-        position: absolute;top: 0;right: -390px;padding: 20px 40px;width: 400px;z-index: -2;
+        margin:0;position: absolute;top: 0;right: -390px;padding: 20px 40px;width: 400px;z-index: -2;
+        .package_type {max-width: 60%;}
+        .rate_box {max-width:60%;text-transform: uppercase;color:$dark-gray;}
     }
 }
 
-.demo {z-index: 100;position: relative;}
+.demo {
+    z-index: 100;position: relative;
+    a {color:#EFF9FA;}
+}
 
 /* Elements */
 a.github_tag {

@@ -12,98 +12,111 @@
 <body>
     <header>
         <a class="logo" href="/"></a>
+        <p class="tagline">Shipenguin is the fastest, cheapest way to print a label online.</p>
     </header>
     <!-- AJM - Change to step 0 before launch -->
-    <div class="container step1">
+    <div class="container step2">
         <div class="box">
             
-            <div class="step_chart columns m-t-lg is-centered ">
-                <div class="column is-two-thirds">
-                <ul class="steps has-content-centered">
-                    <li class="steps-segment is-active">
-                        <span class="steps-marker">1</span>
-                        <div class="steps-content">
-                            <p class="is-size-7">Welcome</p>
-                        </div>
-                    </li>
-                    <li class="steps-segment">
-                        <span class="steps-marker">2</span>
-                        <div class="steps-content">
-                            <p class="is-size-7">Shipping</p>
-                        </div>
-                    </li>
-                    <li class="steps-segment">
-                        <span class="steps-marker">3</span>
-                        <div class="steps-content">
-                            <p class="is-size-7">Payment</p>
-                        </div>
-                    </li>
-                    <li class="steps-segment">
-                        <span class="steps-marker">4</span>
-                        <div class="steps-content">
-                            <p class="is-size-7">Get label</p>
-                        </div>
-                    </li>
-
-                </ul>
-                </div>
-            </div>
-
-
-            <section class="step step_one">
+            <section class="step step_one is-hidden">
                 <h1 class="headline">Shipenguin is the fastest, cheapest way to print a label online.</h1>
                 <p class="subhead">Something something. How amazing is Shipenguin? Look ma! No hands. Checkout these awesome shipping labels. This is all powered by <a href="https://www.shipengine.com/">ShipEngine</a>.</p>
-                <div class="control has-icons-left has-icons-right">
-                    <input class="input is-medium" type="email" placeholder="Email">
-                    <span class="icon is-left">
-                    <i class="fas fa-envelope"></i>
-                    </span>
-                    <span class="icon is-right">
-                    <i class="fas fa-check"></i>
-                    </span>
+                <div class="m-lg">
+                    <button id="goToStep2" class="button is-primary is-active bounce">Get Started</button>
+                    <p class="text-center m-t-md is-size-6">Secondary call to action? Login?</p>
                 </div>
-                <button class="button is-primary bounce">Get Started</button>
-                <p class="text-center m-t-md is-size-6">Secondary call to action? Login?</p>
             </section>
-            
-            <hr>
-            
-            <section class="step step_two is-hidden">
+                        
+            <section class="step step_two">
+                <div class="step_chart columns m-t-lg is-centered">
+                    <div class="column is-two-thirds">
+                    <ul class="steps has-content-centered">
+                        <li class="steps-segment is-active">
+                            <span class="steps-marker"></span>
+                            <div class="steps-content">
+                                <p class="is-size-7">Shipment</p>
+                            </div>
+                        </li>
+                        <li class="steps-segment">
+                            <span class="steps-marker"></span>
+                            <div class="steps-content">
+                                <p class="is-size-7">Payment</p>
+                            </div>
+                        </li>
+                        <li class="steps-segment">
+                            <span class="steps-marker"></span>
+                            <div class="steps-content">
+                                <p class="is-size-7">Get Label</p>
+                            </div>
+                        </li>
+                    </ul>
+                    </div>
+                </div>
                 <h1 class="headline">Let's get to know each other...</h1>
                 <p class="subhead m-b-md">Where are you shipping from? What are you shipping?</p>
+
+                <form id="step_two_form">
                 <div class="columns">
-                    <div id="x" class="column is-one-half">
+                    <div class="column is-one-third">
+                        
+                        <div class="field">
+                            <label class="label is-size-6">My Name</label>
+                            <div class="control">
+                                <input id="my_name" placeholder="Your Full Name" class="input" type="text" value="My Name" required />
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="locationField2" class="column is-two-thirds">
                         <div class="field">
                             <label class="label is-size-6">Ship from <span>Autocomplete by Google</span></label>
                             <div class="control">
-                                <input id="autocomplete" placeholder="Start typing your address" onFocus="geolocate()" class="input" type="text" />
+                                <input id="autocomplete" placeholder="Start typing your address" onFocus="geolocate()" class="input" type="text" required value="11112 Old San Antonio Road, Austin, TX, USA" />
+                                <span class="tag verify" id="verify">
+                                    <i class="fas fa-cog fa-spin"></i>Verifying via ShipEngine
+                                </span>
                             </div>
-                          </div>
-                      </div>
-                      <div id="locationField2" class="column is-one-half">
+                        </div>
+                    </div>
+                </div>
+                <div class="columns">
+                    <div class="column is-one-third">
+                        <div class="field">
+                            <label class="label is-size-6">recipient’s Name</label>
+                            <div class="control">
+                                <input id="rep_name" placeholder="Recipient’s Full Name" class="input" type="text" value="rep name" required />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="locationField2" class="column is-two-thirds">
                         <div class="field">
                             <label class="label is-size-6">Ship to <span>Autocomplete by Google</span></label>
                             <div class="control">
-                                <input id="autocomplete2" placeholder="Start typing your address" onFocus="geolocate()" class="input" type="text" />
+                                <input id="autocomplete2" placeholder="Start typing your address" onFocus="geolocate()" class="input" type="text" required />
+                                <span class="tag verify" id="verify2">
+                                    <i class="fas fa-cog fa-spin"></i>Verifying via ShipEngine
+                                </span>
                             </div>
-                          </div>
-                      </div>
+                        </div>
+                    </div>
                 </div>
 
+                <label class="label has-text-grey-light">Package Information</label>
 
-                <div class="columns">
+                <div class="columns package_info">
                     <div class="column is-one-half">
                         <label class="label">Package weight</label>
                         <div class="columns">
                             <div class="column is-one-half">
                                 <div class="control">
-                                    <input class="input" type="text" placeholder="Weight - Lbs">
+                                    <input id="weight_lb" class="input" type="text" placeholder="Weight - Lbs" value="3" required>
                                 </div>
                                 <p class="help">Pounds</p>
                             </div>
                             <div class="column is-one-half">
                                 <div class="control">
-                                    <input class="input" type="text" placeholder="Weight - Oz">
+                                    <input id="weight_oz" class="input" type="text" placeholder="Weight - Oz" value="1" required>
                                 </div>
                                 <p class="help">Oz</p>
                             </div>
@@ -114,19 +127,19 @@
                         <div class="columns">
                             <div class="column is-one-half">
                                 <div class="control">
-                                    <input class="input" type="text" placeholder="Length">
+                                    <input id="size_length" class="input" type="text" placeholder="Length"  value="3" required>
                                 </div>
                                 <p class="help">Length in inches</p>
                             </div>
                             <div class="column is-one-half">
                                 <div class="control">
-                                    <input class="input" type="text" placeholder="Width">
+                                    <input id="size_width" class="input" type="text" placeholder="Width" value="3" >
                                 </div>
                                 <p class="help">Width in inches</p>
                             </div>
                             <div class="column is-one-half">
                                 <div class="control">
-                                    <input class="input" type="text" placeholder="Height">
+                                    <input id="size_height" class="input" type="text" placeholder="Height" value="3" >
                                 </div>
                                 <p class="help">Height in inches</p>
                             </div>
@@ -134,101 +147,66 @@
                     </div>
                 </div>
 
-                <div class="columns">
-                    <div class="column is-one-half">
-                        <label class="label">Package information</label>
+                <aside>
+
+                    <div class="rate_list">
+                        
+                    </div>
+
+                    <div class="package_type">
+                        <label>Package Type</label>
+                            <img src="/images/icon-box-generic.svg">
+                        <p>USPS - small flat rate box</p>
+                        <button>Select package type</button>
+                    </div>
+
+                    <div class="rate_box">
+                        <label>Your label price</label>
+                        <div class="rate">
+                            <span>$10.00</span><label>Plus Tax</label>
+                        </div>
+                    </div>
+
+                    <div class="is-grouped-centered">
+                        <p class="step2_errors"></p>
+                        <button id="goToStep3" class="button is-inactive">Grab ShipPengquin Rates <i class="fas fa-arrow-alt-circle-right"></i></button>
+                    </div>
+                    
+                    <div class="t_and_c"">
                         <label class="checkbox">
                             <input type="checkbox">
                             I agree this package contains <strong>no</strong> hazardous materials
                         </label>
-                    </div>
-                    <div class="column is-one-half">
-                        <!-- AJM - Do we need legal?? -->
-                        <!-- <label class="label">Legal</label>
                         <label class="checkbox">
                             <input type="checkbox">
                             I agree to the <a href="#">terms and conditions</a>
-                        </label> -->
-                    </div>
-                </div>
-
-                <aside>
-                    <div id="addressone" class="address">
-                    <label class="label">Ship From
-                        <span class="tag verify" id="verify">
-                            <i class="fas fa-cog fa-spin"></i>Verifying via ShipEngine
-                        </span>
-                    </label>
-
-
-
-                        <span type="text" id="street_number" name="street_number"></span>
-                        <span type="text" id="route" name="street_name"></span>
-                        <span type="text" id="locality" name="town_city"></span>
-                        <span type="text" id="administrative_area_level_1" name="administrative_area_level_1"></span>
-                        <span type="text" id="postal_code" name="postcode"></span>
-                        <span type="text" id="country" name="country"></span>
-                    </div>
-                    <div id="addresstwo" class="address">
-
-                    <label class="label">Ship to
-                        <span class="tag verify" id="verify2">
-                            <i class="fas fa-cog fa-spin"></i>Verifying via ShipEngine
-                        </span>
-                    </label>
-                        <span type="text" id="street_number2" name="street_number2"></span>
-                        <span type="text" id="route2" name="street_name2"></span>
-                        <span type="text" id="locality2" name="town_city2"></span>
-                        <span type="text" id="administrative_area_level_12" name="administrative_area_level_12"></span>
-                        <span type="text" id="postal_code2" name="postcode2"></span>
-                        <span type="text" id="country2" name="country2"></span>
-                      </div>
-
-                    <div class="address rate">
-                        <label class="label">Select Rate 
-                            <span class="tag verify" id="verify2">
-                                <i class="fas fa-cog fa-spin"></i>Rates via ShipEngine
-                            </span>
                         </label>
-                        <div class="control p-sm">
-                            <label class="radio">
-                                <img class="ice_right" src="/images/usps.svg">
-                                <span class="price">$0.00</span>
-                            </label>
-                        </div>
                     </div>
-                      
-                    <button id="goToStep3" class="button is-inactive bounce" disabled>Proceed to Pay <i class="fas fa-arrow-alt-circle-right"></i></button>
-
                  </aside>
+                </form>
             </section>
 
-            <section class="step step_three is-hidden">
+            <section class="step step_two is-hidden">
                 <h1 class="headline">Almost finished!</h1>
-                <p class="subhead">We'll charge your card <strong>$24.33</strong> and you can download your label on the next step!</p>
-
-
-                <!-- Display a payment form -->
-                <form id="payment-form">
-                    <div id="card-element"><!--Stripe.js injects the Card Element--></div>
-                    <div class="m-xl field is-grouped is-grouped-centered">
-                        <button id="submit" class="button is-primary bounce">Pay and Grab my label! <i class="fas fa-arrow-alt-circle-right"></i></button>
+                <p class="subhead final_price">We'll charge your card <strong>$24.33</strong> and you can download your label on the next step!</p>
+                <form id="payment-form" class="package_info">
+                    <div class="field is-grouped is-grouped-centered">
+                        <img src="/images/powered_by_stripe.svg">
                     </div>
-                    <div class="m-xl field is-grouped is-grouped-centered">
+                    <div id="card-element"><!--Stripe.js injects the Card Element--></div>
+                    <div class="field is-grouped is-grouped-centered">
                         <p id="card-errors" role="alert"></p>
                         <p class="result-message is-hidden">
                         Payment succeeded!
                         </p>
                     </div>
+                    <div class="field is-grouped is-grouped-centered">
+                        <button id="submit" class="button is-primary bounce">Pay and Grab my label! <i class="fas fa-arrow-alt-circle-right"></i></button>
+                    </div>
+
                 </form>
-              
-
-                      
-                      
-
-
-
             </section>
+
             <section class="step step_four has-text-centered is-hidden">
                 <h1 class="headline">Success!</h1>
                 <p class="subhead m-b-md">Checkout your label below!</p>
@@ -241,7 +219,7 @@
 
     </div>
 
-    <div class="demo container is-size-7 has-text-centered">
+    <div class="demo container is-size-7 has-text-centered is-hidden">
         
             <strong>For demo only </strong><span class="demo_steps"><a href="#">Step one</a> | <a href="#">Step two</a> | <a href="#">Step three</a> | <a href="#">Step four</a></span>
         
