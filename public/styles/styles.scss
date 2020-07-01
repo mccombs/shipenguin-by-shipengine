@@ -121,9 +121,13 @@ $off-white: #f0f0f0;
 .card {background: none;}
 
 /* Steps */
+.steps {margin:20px auto 0;max-width: 125px;}
 .steps-segment {cursor: pointer;}
 .steps-segment:after, .steps:not(.is-hollow) .steps-marker:not(.is-hollow), .steps:not(.is-hollow) .steps-segment.is-active .steps-marker:not(.is-hollow) {
     background-color: $teal;
+}
+@include media(break3) {
+    .steps {max-width: initial;}
 }
 
 /* Globals */
@@ -138,21 +142,22 @@ header {text-align:center;}
 .tagline {font-weight: 400;font-size: 1.75em;color: $ice;}
 
 .penguin_background {
+    overflow: hidden;height: 100%;width:100%;position: absolute;top:0;left:0;
     .ice_a, .ice_b, .ice_c, .ice_left, .ice_right, .pen {display: none;}
     .ice_a, .ice_b, .ice_c, .ice_left, .ice_right {position: absolute;bottom: 0;}
     .ice_left {left: 0;}
-    .ice_right {right: 0;}
+    .ice_right {right: 0;bottom:-10px;}
     .ice_a {left:24vw;bottom:10vh;}
     .ice_b {left: 33vw;bottom:15vh;}
     .ice_c {left: 44vw;bottom:20vh;}
     .pen {width: 35px;position: absolute;}
     .penguin_a {right: 150px;bottom:175px;}
-    .penguin_b {width:28px;right: 130px;bottom:160px;}
-    .penguin_c {width:20px;right: 155px;bottom:155px;}
-    .penguin_d {width:20px;right: 155px;bottom:155px;}
-    .penguin_e {width: 22px;right: 355px;bottom: 82px;}
-    @include media(break3) {
-        .ice_right, .pen {display: block;}
+    .penguin_b {width:28px;right: 130px;bottom:150px;}
+    .penguin_c {width:20px;right: 155px;bottom:145px;}
+    .penguin_d {width:20px;right: 155px;bottom:145px;}
+    .penguin_e {width: 22px;right: 355px;bottom: 72px;}
+    @include media(break5) {
+       .ice_left, .ice_right, .pen {display: block;}
     }
 }
 
@@ -174,17 +179,20 @@ p.subhead {padding:0;font-size: 1.25em;font-weight: 300;text-align: center;}
     font-size: .8em;position: absolute;top:8px;right:5px;
     svg {max-width: 12px;margin:-2px 5px 0 0;display: inline-block;}
 }
-.container.step2 .box {
-    @include media(break3) {
+.container.step1 .box {
+    @include media(break7) {
         transform:translateX(-160px);
     }
 }
 
 .package_info {background:$off-white;border:1px solid darken($soft-gray, 10%);padding: 15px 20px;border-radius: 5px;margin:5px 0;}
+.package_info.payment_info {margin:25px auto;}
 
-.step {padding: 50px;}
+@include media(break3) {
+    .step {padding: 50px;}
+}
 .step_one {
-    padding: 50px 0;text-align:center;
+    text-align:center;
     .control {max-width: 400px;margin: 50px auto 0;}
     input[type='email'] {display:block;z-index: 2;position: relative;}
     .button:hover {animation-name: bounce;}
@@ -193,7 +201,7 @@ p.subhead {padding:0;font-size: 1.25em;font-weight: 300;text-align: center;}
     }
 }
 .step_two, .step_three, .step_four {
-    padding: 0 0 50px;
+    padding: 50px 0;
     @include media(break3) {
         padding: 0 75px 50px;
 
@@ -205,16 +213,20 @@ p.subhead {padding:0;font-size: 1.25em;font-weight: 300;text-align: center;}
     li.is-active p {color: $teal;}
 }
 aside {
-    background: #EBEBEB;margin:15px;padding: 20px;border-radius: 5px;height: 100%;position: relative;overflow: hidden;
+    background: #EBEBEB;margin:15px auto;padding: 20px;border-radius: 5px;height: 100%;position: relative;overflow: hidden;max-width: 300px;
     .rate_list {
-        background: $dark-teal;position: absolute;top:-100%;left:0;width: 100%;height: 100%;padding:20px;z-index: 2;
-        a, strong {color:$ice !important;}
-        a {display: flex;justify-content: space-between;padding:4px;cursor: pointer;}
-        a:hover {background: $ice;color:$dark-teal !important;}
-        a:hover strong {color:$dark-teal !important;}
+        background: $dark-teal;position: absolute;top:-100%;left:0;width: 100%;height: 100%;padding:20px;z-index: 2;overflow: hidden;
+        .close {text-align: right;color:$ice;cursor: pointer;}
+        .close i:hover {color:darken($ice, 10%);}
+        .newRate, strong {color:$ice !important;}
+        .newRate {display: flex;justify-content: space-between;padding:4px;cursor: pointer;}
+        .newRate:hover {background: $ice;color:$dark-teal !important;}
+        .newRate:hover strong {color:$dark-teal !important;}
     }
     .package_type {
-        position:relative;cursor:pointer;margin:25px auto 50px;background: $ice;border: 1px solid $teal;padding:15px;text-align:center;border-radius:5px;
+        position:relative;cursor:pointer;margin:25px auto 50px;text-align:center;border-radius:5px;
+        .holder {background: $ice;border: 1px solid $teal;padding:15px;}
+        &.is-inactive {opacity: .3;}
         label {color:$teal;font-weight: 800;text-transform: uppercase;}
         img {display:block;margin:10px auto;}
         p {font-size: 12px;}
@@ -227,6 +239,8 @@ aside {
     }
     .rate {
         margin:0 auto;background: $soft-gray;border:1px solid $gray;font-size: 3em;text-align: center;color:$gray;padding:20px 0;border-radius: 15px;
+        &.is-active {background: $ice;border: 1px solid $teal;}
+        &.is-active span, &.is-active label {color:$teal;}
         span {margin:0;display:block;line-height: 1;}
         label {font-size: 14px;margin:0;display: block;text-align: center;;}
     }
@@ -235,16 +249,15 @@ aside {
         label {font-size: .8em;color: $dark-gray;}
     }
     .button {margin: 15px auto;border-radius: 15px;}
-    @include media(break3) {
-        margin:0;position: absolute;top: 0;right: -390px;padding: 20px 40px;width: 400px;z-index: -2;
+    .checkbox.is-error {
+        color: red;
+    }
+
+    @include media(break7) {
+        margin:0;position: absolute;top: 0;right: -390px;padding: 20px 40px;width: 400px;z-index: -2;max-width: initial;
         .package_type {max-width: 60%;}
         .rate_box {max-width:60%;text-transform: uppercase;color:$dark-gray;}
     }
-}
-
-.demo {
-    z-index: 100;position: relative;
-    a {color:#EFF9FA;}
 }
 
 /* Elements */

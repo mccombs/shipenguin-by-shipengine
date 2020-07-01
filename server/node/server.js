@@ -16,10 +16,7 @@ const ngrok = config.ngrok.enabled ? require('ngrok') : null;
 const app = express();
 const stripe = require("stripe")("sk_test_5o0vN0SGJmo9fL27syITwDYC00v7Ly5D4h");
 const opn = require('opn');
-
-
-
-
+const { read } = require('fs');
 
 // Setup useful middleware.
 app.use(
@@ -42,24 +39,28 @@ app.set('view engine', 'html');
 app.use('/', require('./routes'));
 app.use(express.static("."));
 app.use(express.json());
-const calculateOrderAmount = items => {
-  // Replace this constant with a calculation of the order's amount
-  // Calculate the order total on the server to prevent
-  // people from directly manipulating the amount on the client
-  return 1400;
-};
-app.post("/create-payment-intent", async (req, res) => {
-  const { items } = req.body;
 
-  console.log(items);
-  // Create a PaymentIntent with the order amount and currency
-  const paymentIntent = await stripe.paymentIntents.create({
-    amount: calculateOrderAmount(items),
-    currency: "usd"
-  });
-  res.send({
-    clientSecret: paymentIntent.client_secret
-  });
+
+function calculateOrderAmount(rate) {
+    // Because Stripe likes numbers without decimals.
+    const converRate = (rate / 100).toFixed(4);
+    const convertedCost = parseInt(converRate.toString().replace(".", ""), 10);
+    return convertedCost;
+}
+
+app.post("/create-payment-intent", async (req, res) => {
+    const rate = req.body.rate;
+    const convertedCost = calculateOrderAmount(rate);
+
+    
+    // Create a PaymentIntent with the order amount and currency
+    const paymentIntent = await stripe.paymentIntents.create({
+        amount: convertedCost,
+        currency: "usd"
+    });
+    res.send({
+        clientSecret: paymentIntent.client_secret
+    });
 });
 
 // Start the server on the correct port.

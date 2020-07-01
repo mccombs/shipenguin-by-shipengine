@@ -1,6 +1,6 @@
 
 
-
+localStorage.clear();
 
 //////////////////////////////////////////
 ///// STEP ONE: Google Autocomplete //////
@@ -129,6 +129,8 @@ function verifyAddressWithShipEngine(data, statusButton, unique) {
     // adding a placeholder because we don't ask for phone number
 
     const addressDataFormat = JSON.stringify(addressData);
+    
+    console.log('Format address to verify with SE');
     console.log(addressDataFormat);
 
     // Reset button status while verifing
@@ -158,9 +160,10 @@ function verifyAddressWithShipEngine(data, statusButton, unique) {
                 var whichUnique = "address" + unique;
                 localStorage.setItem(whichUnique, addressDataFormat);
 
-                if ($("#verify2").hasClass('is-success') && $("#verify").hasClass('is-success')) {
-                    $('#goToStep3').removeAttr("disabled").removeClass('is-inactive').addClass('is-success');
-                }
+                // Moving till later in the proces
+                // if ($("#verify2").hasClass('is-success') && $("#verify").hasClass('is-success')) {
+                //     $('#goToStep3').removeAttr("disabled").removeClass('is-inactive').addClass('is-success');
+                // }
 
             } 
             else if (status == "unverified") {
@@ -188,19 +191,81 @@ $('#goToStep2').click(function(){
     $('.container').addClass('step1');
     $('.step_one').addClass('is-hidden');
     $('.step_two').removeClass('is-hidden');
+    // Steps Adjust
+    $('.steps-segment').removeClass('is-active');
+    $('.steps-segment:nth-child(2)').addClass('is-active');
 });
 
-$("#step_two_form").submit(function(e) {
+$('.package_type, .package_type button').click(function(event){
+    event.preventDefault();
+    if (!$('.package_type').hasClass('is-inactive')) {
+        $('.rate_list').animate({top:0}, 800);
+    }
+});
+$('.rate_list .close').click(function(event){
+    event.preventDefault();
+    $('.rate_list').animate({top:"-100%"}, 800);
+});
 
-    e.preventDefault();
+$("body").on("click", ".newRate", function(event){
+    event.preventDefault();
+    $('.rate_list').animate({top:"-100%"}, 800);
+    var newPackage = $(this).attr('id');
+    var newPackageService = $(this).find('strong').text();
+    var newPackageName = $(this).find('em').text();
+    var newPackagePrice = $(this).find('span').text();
+    console.log(newPackage + "" + newPackageName + " " + newPackagePrice);
+    var stripePrice = newPackagePrice.replace('$', ''); 
+    
+    // overwriting baseRate and storing
+    localStorage.setItem("rateId", newPackage);
+    localStorage.setItem("ratePrice", stripePrice);
+
+    $('.package_label').text(newPackageService + newPackageName);
+    $('.rate span').text(newPackagePrice);
+    $('.final_price strong').text('$' + stripePrice);
+
+});
+
+$('#goToStep3').click(function(event) {
+    event.preventDefault();
+    if (($('.checkHazardous:checked').is(':checked')) && ($('.checkTcs:checked').is(':checked'))) {
+        // Container Adjust
+        $('.container').removeClass('step0 step1 step2 step3');
+        $('.container').addClass('step2');
+        $('.step_two').slideUp();
+        $('.step_three').slideDown().removeClass('is-hidden');
+        
+        // Steps Adjust
+        $('.steps-segment').removeClass('is-active');
+        $('.steps-segment:nth-child(3)').addClass('is-active');
+
+        // Send new price to stripe
+        // Putting this before step 3 because apparently stripe can't handle overwrites of price/rate >.<
+        console.log("pre step 3");
+        console.log(localStorage.getItem("rateId"));
+        pay(localStorage.getItem("ratePrice"));
+    } else {
+        $('.t_and_c .checkbox').addClass('is-error');
+    }
+
+
+});
+
+$("#step_two_form input").bind('blur', function (e) {
+    console.log('=== STEP: Form blur and data check ===');
 
     // AJM Add form check here....
     var rate_options = '"rate_options":{"carrier_ids":["se-253580"]}';
 
     // AJM - is this the best way to parse this? ¯\_(ツ)_/¯
-    var ship_to = JSON.parse(localStorage.getItem("address2"))[0];
-    var ship_from = JSON.parse(localStorage.getItem("address"))[0];
-    
+    if (localStorage.getItem("address2") != null) {
+        var ship_to = JSON.parse(localStorage.getItem("address2"))[0];
+    }
+    if (localStorage.getItem("address") != null) {
+        var ship_from = JSON.parse(localStorage.getItem("address"))[0];
+    }
+
     // Calculate weight
     var lbs = $('#weight_lb').val();
     var oz = $('#weight_oz').val();
@@ -223,16 +288,20 @@ $("#step_two_form").submit(function(e) {
             }
         };
 
-     var package = JSON.stringify(someData)
-     estimate(package);
-    
+    // Wait until we have all of our data....
+    var dataArray = [ship_to, ship_from, totalWeight, size_length, size_width, size_height];
+    console.log(dataArray);
+    if (!dataArray.includes(undefined)) {
+        console.log('exsists');
+        var package = JSON.stringify(someData);
+        estimate(package);
+    }
 });
 
 
 function estimate(someData) {
-    // Slide Rate Chart down
-    $('.rate_list').animate({top:0}, 800);
-    
+    console.log('STEP: Estimate');
+
     fetch("/rates", {
         method: "POST",
         headers: {
@@ -246,99 +315,58 @@ function estimate(someData) {
         console.log(data);
 
         // Extract the first rate as a default - AJM Best way to do this? ¯\_(ツ)_/¯
-        console.log(data.rate_response.rates[0]);
-        console.log(data.rate_response.rates[0].shipping_amount.amount);
-        var rate = data.rate_response.rates[0].shipping_amount.amount;
-        
+        // console.log(data.rate_response.rates[0]);
+        // console.log(data.rate_response.rates[0].shipping_amount.amount);
+        var baseRate = data.rate_response.rates[0].shipping_amount.amount;
+        var rateId = data.rate_response.rates[0].rate_id;
+        var baseServiceType = data.rate_response.rates[0].service_type;
+        var basePackageType = data.rate_response.rates[0].package_type;
 
-        pay(rate);
+        console.log("=== RATE ID ===");
+        console.log(rateId);
 
-        // Run with rate data
-        $('.rate span').text('$'+rate);
-        
-        // Clear old shipping info
-        $('.rate_list').html("");
+        // Run actions with base rate data
+        $('.rate span').text('$' + baseRate);
+        $('.final_price strong').text('$' + baseRate);
+        $('.package_type').removeClass('is-inactive');
+        $('.package_type .package_label').text(baseServiceType + ' ' + basePackageType);
+        $('.rate_box .rate').addClass('is-active');
+
+        // Allow to go to Step 3
+        $('#goToStep3').removeAttr("disabled").removeClass('is-inactive').addClass('is-success');
+
+        // Store base rate ID
+        localStorage.setItem("rateId", rateId);
+        localStorage.setItem("ratePrice", baseRate);
+
+        console.log("rateId:" + localStorage.getItem("rateId"));
+
         $(data.rate_response.rates).each(function() { 
             console.log(this);
-            $('.rate_list').append('<a id="' + this.rate_id + '"><strong>' + this.service_type + '</strong>'+ ' ' + this.package_type + '<span>$'+this.shipping_amount.amount+'</span></a>');
+            $('.rate_holder').append('<div class="newRate" id="' + this.rate_id + '"><strong>' + this.service_type + '</strong><em>'+ ' ' + this.package_type + '</em><span>$'+this.shipping_amount.amount+'</span></div>');
         });
-      });
-}  
 
-// Action: Rate Selection
-$('.rate_list a').click(function(){
-    // Slide up
-    var topPos = "-100%";
-    $('.rate_list').animate({top:topPos}, 800);
-    
-    // Store ID [ID not price to prevent hack]
-    var grabId = $(this).attr('id');
-    var price = $(this).child('span').text();
+        // moved this to pre-step3 because stripe is dumb
+        // pay(baseRate);
 
-    console.log(price);
-    localStorage.setItem(newRate, grabId);
-    
-    // Change Price Tag
-    $('.rate span').text(price);
-});
-
-
-
-// Demo toggle
-$('.demo_steps a').click(function(){
-    var step = $('.demo_steps a').index(this);
-    $('.step').each(function(i) {
-        $(this).addClass('is-hidden',i);
-        $('.step_chart li').removeClass('is-active');
     });
-    $('.container').removeClass('step0 step1 step2 step3');
-    $('.container').addClass('step' + step);
-
-
-    if (step == 0) {
-        $('.step_one').removeClass('is-hidden');
-        $('.step_chart li:nth-child(1)').addClass('is-active');
-    } else if (step == 1) {
-        $('.step_two').removeClass('is-hidden');
-        $('.step_chart li:nth-child(2)').addClass('is-active');
-    } else if (step == 2) {
-        $('.step_three').removeClass('is-hidden');
-        $('.step_chart li:nth-child(3)').addClass('is-active');
-    } else if (step == 3) {
-        $('.step_four').removeClass('is-hidden');
-        $('.step_chart li:nth-child(4)').addClass('is-active');
-    }
-    return false;
-});
-
-
-
-
-
-
-
-
+}  
 
 // A reference to Stripe.js initialized with your real test publishable API key.
 var stripe = Stripe("pk_test_0gDWcjB7xWWgt34p1UQoCxFH00CcruEzwb");
 
-// The items the customer wants to buy
-// var purchase = {
-//   items: [{ id: "xl-tshirt" }]
-// };
-
-// Disable the button until we have Stripe set up on the page
-// document.querySelector("button").disabled = true;
 function pay(storedRate) {
-    console.log("i am pay func");
+    console.log("=== STEP Pay() ===");
     console.log(storedRate);
+
+    var rate = {"rate": storedRate};
 
     fetch("/create-payment-intent", {
     method: "POST",
     headers: {
         "Content-Type": "application/json"
     },
-    body: storedRate
+    body: JSON.stringify(rate)
     })
     .then(function(result) {
         return result.json();
@@ -368,9 +396,9 @@ function pay(storedRate) {
         card.mount("#card-element");
 
         card.on("change", function (event) {
-        // Disable the Pay button if there are no card details in the Element
-        document.querySelector("button").disabled = event.empty;
-        document.querySelector("#card-errors").textContent = event.error ? event.error.message : "";
+            // Disable the Pay button if there are no card details in the Element
+            document.querySelector("button").disabled = event.empty;
+            document.querySelector("#card-errors").textContent = event.error ? event.error.message : "";
         });
 
         var form = document.getElementById("payment-form");
@@ -383,59 +411,100 @@ function pay(storedRate) {
 
 
 }
-    // Calls stripe.confirmCardPayment
-    // If the card requires authentication Stripe shows a pop-up modal to
-    // prompt the user to enter authentication details without leaving your page.
-    var payWithCard = function(stripe, card, clientSecret) {
-        loading(true);
-        stripe
-            .confirmCardPayment(clientSecret, {
-            payment_method: {
-                card: card
-            }
-            })
-            .then(function(result) {
-            if (result.error) {
-                // Show error to your customer
-                showError(result.error.message);
-            } else {
-                // The payment succeeded!
-                orderComplete(result.paymentIntent.id);
-            }
-            });
-        };
-    
-        /* ------- UI helpers ------- */
-    
-        // Shows a success message when the payment is complete
-        var orderComplete = function(paymentIntentId) {
-        loading(false);
-        //   document
-        //     .querySelector(".result-message a")
-        //     .setAttribute(
-        //       "href",
-        //       "https://dashboard.stripe.com/test/payments/" + paymentIntentId
-        //     );
-        $('.result-message').removeClass("is-hidden");
-        document.querySelector("button").disabled = true;
-        };
-    
-        // Show the customer the error from Stripe if their card fails to charge
-        var showError = function(errorMsgText) {
-        loading(false);
-        var errorMsg = document.querySelector("#card-errors");
-        errorMsg.textContent = errorMsgText;
-        setTimeout(function() {
-            errorMsg.textContent = "";
-        }, 4000);
-        };
-    
-        // Show a spinner on payment submission
-        var loading = function(isLoading) {
-        if (isLoading) {
-            // Disable the button and show a spinner
-            document.querySelector("button").disabled = true;
-        } else {
-            document.querySelector("button").disabled = false;
+
+// Calls stripe.confirmCardPayment
+// If the card requires authentication Stripe shows a pop-up modal to
+// prompt the user to enter authentication details without leaving your page.
+var payWithCard = function(stripe, card, clientSecret) {
+    loading(true);
+    stripe.confirmCardPayment(clientSecret, {
+        payment_method: {
+            card: card
         }
-        };
+        })
+        .then(function(result) {
+        if (result.error) {
+            // Show error to your customer
+            showError(result.error.message);
+        } else {
+            // The payment succeeded!
+            orderComplete(result.paymentIntent.id);
+        }
+        });
+};
+
+/* ------- UI helpers ------- */
+
+// Shows a success message when the payment is complete
+var orderComplete = function(paymentIntentId) {
+    loading(false);
+    //   document
+    //     .querySelector(".result-message a")
+    //     .setAttribute(
+    //       "href",
+    //       "https://dashboard.stripe.com/test/payments/" + paymentIntentId
+    //     );
+
+    // RELEASE THE HOUNDS!
+    console.log('=== STEP XX: Release the hounds! I mean form ===');
+    getLabel();
+    $('.result-message').removeClass("is-hidden");
+    $('.container').removeClass('step0 step1 step2 step3');
+    $('.container').addClass('step3');
+    $('.step_three').addClass('is-hidden');
+    $('.step_four').removeClass('is-hidden');
+    // Steps Adjust
+    $('.steps-segment').removeClass('is-active');
+    $('.steps-segment:nth-child(4)').addClass('is-active');
+
+    document.querySelector("button").disabled = true;
+};
+
+// Show the customer the error from Stripe if their card fails to charge
+var showError = function(errorMsgText) {
+    loading(false);
+    var errorMsg = document.querySelector("#card-errors");
+    errorMsg.textContent = errorMsgText;
+    setTimeout(function() {
+        errorMsg.textContent = "";
+    }, 4000);
+};
+
+// Show a spinner on payment submission
+    var loading = function(isLoading) {
+    if (isLoading) {
+        // Disable the button and show a spinner
+        document.querySelector("button").disabled = true;
+    } else {
+        document.querySelector("button").disabled = false;
+    }
+};
+
+function getLabel() {
+    console.log('=== STEP XX: Get Label ===');
+    console.log(localStorage.getItem("rateId"));
+
+     var rate = {"rate": localStorage.getItem("rateId")};
+
+    console.log(rate);
+
+    fetch("/label", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(rate)
+        })
+        .then(function(response) {
+            return response.json();
+        }).then(function(data) {
+
+            console.log(data);
+            var labelPdf = data.label_download.href;
+            var labelImage = data.label_download.png;
+
+            $('#labelPlaceholder').attr("href", labelPdf);
+            $('.label_preview').attr("src", labelImage);
+
+        })
+}

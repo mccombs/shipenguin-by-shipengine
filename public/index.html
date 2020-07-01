@@ -15,10 +15,41 @@
         <p class="tagline">Shipenguin is the fastest, cheapest way to print a label online.</p>
     </header>
     <!-- AJM - Change to step 0 before launch -->
-    <div class="container step2">
+    <div class="container step0">
         <div class="box">
             
-            <section class="step step_one is-hidden">
+            <div class="step_chart columns m-t-lg is-centered">
+                <div class="column is-two-thirds">
+                <ul class="steps has-content-centered">
+                    <li class="steps-segment is-active">
+                        <span class="steps-marker"></span>
+                        <div class="steps-content">
+                            <p class="is-size-7">Start</p>
+                        </div>
+                    </li>
+                    <li class="steps-segment">
+                        <span class="steps-marker"></span>
+                        <div class="steps-content">
+                            <p class="is-size-7">Shipment</p>
+                        </div>
+                    </li>
+                    <li class="steps-segment">
+                        <span class="steps-marker"></span>
+                        <div class="steps-content">
+                            <p class="is-size-7">Payment</p>
+                        </div>
+                    </li>
+                    <li class="steps-segment">
+                        <span class="steps-marker"></span>
+                        <div class="steps-content">
+                            <p class="is-size-7">Get Label</p>
+                        </div>
+                    </li>
+                </ul>
+                </div>
+            </div>
+
+            <section class="step step_one">
                 <h1 class="headline">Shipenguin is the fastest, cheapest way to print a label online.</h1>
                 <p class="subhead">Something something. How amazing is Shipenguin? Look ma! No hands. Checkout these awesome shipping labels. This is all powered by <a href="https://www.shipengine.com/">ShipEngine</a>.</p>
                 <div class="m-lg">
@@ -27,31 +58,7 @@
                 </div>
             </section>
                         
-            <section class="step step_two">
-                <div class="step_chart columns m-t-lg is-centered">
-                    <div class="column is-two-thirds">
-                    <ul class="steps has-content-centered">
-                        <li class="steps-segment is-active">
-                            <span class="steps-marker"></span>
-                            <div class="steps-content">
-                                <p class="is-size-7">Shipment</p>
-                            </div>
-                        </li>
-                        <li class="steps-segment">
-                            <span class="steps-marker"></span>
-                            <div class="steps-content">
-                                <p class="is-size-7">Payment</p>
-                            </div>
-                        </li>
-                        <li class="steps-segment">
-                            <span class="steps-marker"></span>
-                            <div class="steps-content">
-                                <p class="is-size-7">Get Label</p>
-                            </div>
-                        </li>
-                    </ul>
-                    </div>
-                </div>
+            <section class="step step_two is-hidden">
                 <h1 class="headline">Let's get to know each other...</h1>
                 <p class="subhead m-b-md">Where are you shipping from? What are you shipping?</p>
 
@@ -71,7 +78,7 @@
                         <div class="field">
                             <label class="label is-size-6">Ship from <span>Autocomplete by Google</span></label>
                             <div class="control">
-                                <input id="autocomplete" placeholder="Start typing your address" onFocus="geolocate()" class="input" type="text" required value="11112 Old San Antonio Road, Austin, TX, USA" />
+                                <input id="autocomplete" placeholder="Start typing your address" onFocus="geolocate()" class="input" type="text" required />
                                 <span class="tag verify" id="verify">
                                     <i class="fas fa-cog fa-spin"></i>Verifying via ShipEngine
                                 </span>
@@ -150,35 +157,38 @@
                 <aside>
 
                     <div class="rate_list">
-                        
+                        <div class="rate_holder"></div>
+                        <div class="close"><i class="fa fa-times" aria-hidden="true"></i></div>
                     </div>
 
-                    <div class="package_type">
-                        <label>Package Type</label>
-                            <img src="/images/icon-box-generic.svg">
-                        <p>USPS - small flat rate box</p>
+                    <div class="package_type is-inactive">
+                        <div class="holder">
+                            <label>Package Type</label>
+                                <img src="/images/icon-box-generic.svg">
+                            <p class="package_label">USPS</p>
+                        </div>
                         <button>Select package type</button>
                     </div>
 
                     <div class="rate_box">
                         <label>Your label price</label>
                         <div class="rate">
-                            <span>$10.00</span><label>Plus Tax</label>
+                            <span><i class="fas fa-cog fa-spin"></i></span><label>Plus Tax</label>
                         </div>
                     </div>
 
                     <div class="is-grouped-centered">
                         <p class="step2_errors"></p>
-                        <button id="goToStep3" class="button is-inactive">Grab ShipPengquin Rates <i class="fas fa-arrow-alt-circle-right"></i></button>
+                        <button id="goToStep3" class="button is-inactive" disabled>Pay for my label <i class="fas fa-arrow-alt-circle-right"></i></button>
                     </div>
                     
                     <div class="t_and_c"">
                         <label class="checkbox">
-                            <input type="checkbox">
+                            <input type="checkbox" class="checkHazardous">
                             I agree this package contains <strong>no</strong> hazardous materials
                         </label>
                         <label class="checkbox">
-                            <input type="checkbox">
+                            <input type="checkbox" class="checkTcs">
                             I agree to the <a href="#">terms and conditions</a>
                         </label>
                     </div>
@@ -186,43 +196,35 @@
                 </form>
             </section>
 
-            <section class="step step_two is-hidden">
+            <section class="step step_three is-hidden">
                 <h1 class="headline">Almost finished!</h1>
-                <p class="subhead final_price">We'll charge your card <strong>$24.33</strong> and you can download your label on the next step!</p>
-                <form id="payment-form" class="package_info">
-                    <div class="field is-grouped is-grouped-centered">
-                        <img src="/images/powered_by_stripe.svg">
-                    </div>
-                    <div id="card-element"><!--Stripe.js injects the Card Element--></div>
-                    <div class="field is-grouped is-grouped-centered">
-                        <p id="card-errors" role="alert"></p>
-                        <p class="result-message is-hidden">
-                        Payment succeeded!
-                        </p>
-                    </div>
-                    <div class="field is-grouped is-grouped-centered">
-                        <button id="submit" class="button is-primary bounce">Pay and Grab my label! <i class="fas fa-arrow-alt-circle-right"></i></button>
-                    </div>
-
-                </form>
+                <p class="subhead final_price">We'll charge your card <strong>$xx.xx</strong> and you can download your label on the next step!</p>
+                <form id="payment-form">
+                    <div class="package_info payment_info">
+                        <div class="field is-grouped is-grouped-centered">
+                            <img src="/images/powered_by_stripe.svg">
+                        </div>
+                        <div id="card-element"><!--Stripe.js injects the Card Element--></div>
+                        <div class="field is-grouped is-grouped-centered">
+                            <p id="card-errors" role="alert"></p>
+                            <p class="result-message is-hidden">
+                            Payment succeeded!
+                            </p>
+                        </div>
+                        <div class="field is-grouped is-grouped-centered m-md">
+                            <button id="submit" class="button is-primary bounce">Pay and Grab my label! <i class="fas fa-arrow-alt-circle-right"></i></button>
+                        </div>    
+                    </form>
             </section>
 
             <section class="step step_four has-text-centered is-hidden">
                 <h1 class="headline">Success!</h1>
                 <p class="subhead m-b-md">Checkout your label below!</p>
-                <img class="label_preview" src="/images/label-10441659.png">
-                <p><a href="https://api.shipengine.com/v1/downloads/10/BgQQH1jfDkCjjaEzO7ccVQ/label-10441659.pdf">Download my label</a>
-                    </p>
+                <p><a id="labelPlaceholder" href="#"><img class="label_preview" src="#"><br>Download my label</a></p>
             </section>
 
         </div>
 
-    </div>
-
-    <div class="demo container is-size-7 has-text-centered is-hidden">
-        
-            <strong>For demo only </strong><span class="demo_steps"><a href="#">Step one</a> | <a href="#">Step two</a> | <a href="#">Step three</a> | <a href="#">Step four</a></span>
-        
     </div>
 
     <a class="github_tag" href="https://github.com/mccombs/shipenguin-by-shipengine"></a>

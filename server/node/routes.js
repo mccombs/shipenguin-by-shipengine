@@ -76,35 +76,38 @@ router.post('/rates', (req, res) => {
         // res.json(response);
         // res.status(200).json(response);
     });
-
 });
 
-// router.post('/rates', (req, res) => {
+router.post('/label', (req, res) => {
     
-//     var options = {
-//         'method': 'POST',
-//         'url': 'https://api.shipengine.com/v1/rates',
-//         'headers': {
-//           'Host': 'api.shipengine.com',
-//           'API-Key': 'TEST_nzQR9NW7hSCzUTx0D9ItEGldeaWLgxhDhSPPsNpXLnU',
-//           'Content-Type': 'application/json'
-//         },      
-//         body: JSON.stringify({"rate_options":{"carrier_ids":["se-253580"]},"shipment":{"validate_address":"no_validation","ship_to":{"name":"Amanda Miller","phone":"555-555-5555","address_line1":"525 S Winchester Blvd","city_locality":"San Jose","state_province":"CA","postal_code":"95128","country_code":"US","address_residential_indicator":"yes"},"ship_from":{"company_name":"Example Corp.","name":"John Doe","phone":"111-111-1111","address_line1":"4009 Marathon Blvd","address_line2":"Suite 300","city_locality":"Austin","state_province":"TX","postal_code":"78756","country_code":"US","address_residential_indicator":"no"},"packages":[{"weight":{"value":64,"unit":"ounce"}}]}})
-//     };
-//       request(options, function (error, response) { 
-//         if (error) throw new Error(error);
+    var rate = req.body.rate;
+    var rateUrl = "https://api.shipengine.com/v1/labels/rates/" + rate;
 
-//         var responseBody =  JSON.parse(response.body);
-//         // quick reference -> app console
-//         // var verification = responseBody[0].status;
-//         // console.log(verification);
-//         // console.log(responseBody);
-//         res.json(responseBody);
-//         // res.json(response);
-//         // res.status(200).json(response);
-//     });
+    var options = {
+        'method': 'POST',
+        'url': rateUrl,
+        'headers': {
+          'Host': 'api.shipengine.com',
+          'API-Key': 'TEST_nzQR9NW7hSCzUTx0D9ItEGldeaWLgxhDhSPPsNpXLnU',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(req.body)
+      
+      };
+      request(options, function (error, response) { 
+        if (error) throw new Error(error);
 
-// })
+        var responseBody =  JSON.parse(response.body);
+        // quick reference -> app console
+        // var verification = responseBody[0].status;
+        // console.log(verification);
+        // console.log(responseBody);
+        res.json(responseBody);
+        // res.json(response);
+        // res.status(200).json(response);
+    });
+});
+
 
 
 // Webhook handler to process payments for sources asynchronously.
@@ -208,16 +211,6 @@ router.get('/config', (req, res) => {
     shippingOptions: config.shippingOptions,
   });
 });
-
-// Retrieve all products.
-// router.get('/products', async (req, res) => {
-//   res.json(await products.list());
-// });
-
-// // Retrieve a product by ID.
-// router.get('/products/:id', async (req, res) => {
-//   res.json(await products.retrieve(req.params.id));
-// });
 
 // Retrieve the PaymentIntent status.
 router.get('/payment_intents/:id/status', async (req, res) => {
