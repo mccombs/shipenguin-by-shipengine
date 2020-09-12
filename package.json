@@ -20,7 +20,7 @@
     "gulp-sass": "^4.1.0",
     "gulp-sourcemaps": "^2.6.5",
     "ngrok": "^3.2.7",
-    "node-fetch": "^2.6.0",
+    "node-fetch": "^2.6.1",
     "nodemon": "^2.0.4",
     "opn": "^6.0.0",
     "postcss-import": "^12.0.1",
